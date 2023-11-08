@@ -4,18 +4,24 @@ import React, { useEffect, useState } from "react";
 import Players from "../../SampleData";
 import Nav from "./components/Nav";
 import Footer from "./components/Footer";
+import Team from "./components/Team";
 
-interface Team {
-  name: string;
-  team: string;
-  value: number;
+interface TeamState {
+  totalValue: number;
+  team: { name: string; teamName: string; value: number }[];
 }
 
 export default function Home() {
   const [player1, setPlayer1] = useState("");
   const [player2, setPlayer2] = useState("");
-  const [team1, setTeam1] = useState<Team[]>([]);
-  const [team2, setTeam2] = useState<Team[]>([]);
+  const [team1, setTeam1] = useState<TeamState>({
+    totalValue: 0,
+    team: [],
+  });
+  const [team2, setTeam2] = useState<TeamState>({
+    totalValue: 0,
+    team: [],
+  });
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [analyzed, setAnalyzed] = useState(false);
 
@@ -42,7 +48,7 @@ export default function Home() {
     // check which team is adding player
     if (teamNum === 1) {
       // if player input is empty or team already has player do nothing
-      if (!player1 || team1.includes(e.target.innerText)) {
+      if (!player1 || team1.team.includes(e.target.innerText)) {
         setPlayer1("");
         setSuggestions([]);
         return;
@@ -53,15 +59,19 @@ export default function Home() {
       );
       const matchObj = {
         name: match[0].name,
-        team: match[0].team,
+        teamName: match[0].team,
         value: match[0].tradeValue,
       };
       // else add player to current team array
-      setTeam1([...team1, matchObj]);
+      // setTeam1([...team1, matchObj]);
+      setTeam1({
+        totalValue: team1.totalValue + matchObj.value,
+        team: [...team1.team, matchObj],
+      });
       // clear player input
       setPlayer1("");
     } else {
-      if (!player2 || team2.includes(e.target.innerText)) {
+      if (!player2 || team2.team.includes(e.target.innerText)) {
         setPlayer2("");
         setSuggestions([]);
         return;
@@ -71,11 +81,15 @@ export default function Home() {
       );
       const matchObj = {
         name: match[0].name,
-        team: match[0].team,
+        teamName: match[0].team,
         value: match[0].tradeValue,
       };
       // else add player to current team array
-      setTeam2([...team2, matchObj]);
+      // setTeam2([...team2, matchObj]);
+      setTeam2({
+        totalValue: team2.totalValue + matchObj.value,
+        team: [...team2.team, matchObj],
+      });
       setPlayer2("");
     }
     // clear suggestions
@@ -89,32 +103,39 @@ export default function Home() {
       // find index of player in team array
       // let playerIdx = team1.indexOf(playerName);
       let playerIdx;
-      for (let i = 0; i < team1.length; i++) {
-        if (team1[i].name === playerName) {
+      for (let i = 0; i < team1.team.length; i++) {
+        if (team1.team[i].name === playerName) {
           playerIdx = i;
           break;
         }
       }
       // make new array without selected player
       const newTeam = [
-        ...team1.slice(0, playerIdx),
-        ...team1.slice(playerIdx + 1),
+        ...team1.team.slice(0, playerIdx),
+        ...team1.team.slice(playerIdx + 1),
       ];
       // set team state to new team
-      setTeam1(newTeam);
+      setTeam1({
+        totalValue: team1.totalValue - team1.team[playerIdx].value,
+        team: newTeam,
+      });
     } else {
       let playerIdx;
-      for (let i = 0; i < team1.length; i++) {
-        if (team1[i].name === playerName) {
+      for (let i = 0; i < team2.team.length; i++) {
+        if (team2.team[i].name === playerName) {
           playerIdx = i;
           break;
         }
       }
       const newTeam = [
-        ...team2.slice(0, playerIdx),
-        ...team2.slice(playerIdx + 1),
+        ...team2.team.slice(0, playerIdx),
+        ...team2.team.slice(playerIdx + 1),
       ];
-      setTeam2(newTeam);
+      // setTeam2(newTeam);
+      setTeam2({
+        totalValue: team2.totalValue - team2.team[playerIdx].value,
+        team: newTeam,
+      });
     }
   };
 
@@ -129,8 +150,8 @@ export default function Home() {
       matches = Players.filter(({ name }) => {
         return (
           name.toLowerCase().includes(player1) &&
-          !team1.some((player) => player.name === name) &&
-          !team2.some((player) => player.name === name)
+          !team1.team.some((player) => player.name === name) &&
+          !team2.team.some((player) => player.name === name)
         );
       });
     } else {
@@ -138,8 +159,8 @@ export default function Home() {
       matches = Players.filter(({ name }) => {
         return (
           name.toLowerCase().includes(player2) &&
-          !team1.some((player) => player.name === name) &&
-          !team2.some((player) => player.name === name)
+          !team1.team.some((player) => player.name === name) &&
+          !team2.team.some((player) => player.name === name)
         );
       });
     }
@@ -149,16 +170,19 @@ export default function Home() {
 
   const handleAnalyze = () => {
     console.log("handleAnalyze fired!");
-    const team1Total = team1.reduce((a, c) => a + c.value, 0);
-    const team2Total = team2.reduce((a, c) => a + c.value, 0);
-    setAnalyzed(true);
-    console.log(team1Total, team2Total);
+    if (!analyzed) {
+      setAnalyzed(true);
+    } else {
+      setAnalyzed(false);
+      setTeam1((prevTeam) => Object.assign(prevTeam, { team: [] }));
+      setTeam2((prevTeam) => Object.assign(prevTeam, { team: [] }));
+    }
   };
 
   return (
     <main className="flex min-h-screen flex-col items-center mx-auto relative">
       <Nav />
-      <section className="min-h-screen pb-48">
+      <section className="min-h-screen pb-48 pt-24">
         <header className="basis-1/5 py-8 max-w-screen-lg px-2">
           <h1>Trade Analyzer</h1>
           <p>
@@ -168,183 +192,39 @@ export default function Home() {
             quidem.
           </p>
         </header>
-        {/* <section className="flex justify-evenly container mx-auto gap-4 py-4 basis-1/5"></section> */}
-        {/* <section className="flex grow shrink-0 justify-evenly container mx-auto gap-4 basis-2/5"> */}
         {analyzed && (
-          <section className="flex justify-between w-64 bg-red-500 rounded px-2 py-4 max-w-screen-lg">
+          <section className="flex justify-between w-64 bg-red-500 rounded px-2 py-4 max-w-screen-lg mx-auto">
             <div>
               <h1>Make trade</h1>
             </div>
             <div>X or Check</div>
           </section>
         )}
-        <section className="flex items-start justify-between container mx-auto py-4 basis-3/5 max-w-screen-lg flex-wrap">
-          <section className="flex flex-col shrink-0 grow justify-evenly gap-4 p-4 basis-1/2">
-            <section className="flex justify-evenly gap-2 py-4 basis-1/3">
-              <div
-                id="team1-input"
-                className="flex gap-2 flex-col justify-evenly w-full"
-              >
-                <label htmlFor="team1">Team 1</label>
-                <div className="gap-1 flex-col flex">
-                  {!analyzed ? (
-                    <input
-                      className="rounded px-2 py-4 w-full"
-                      name="team1"
-                      type="text"
-                      value={player1}
-                      placeholder="Player Name"
-                      onBlur={() => {
-                        setSuggestions([]);
-                        setPlayer1("");
-                      }}
-                      onChange={(e) => onChange(e, 1)}
-                    />
-                  ) : (
-                    <h2 className="px-4 py-2 bg-red-500 rounded">
-                      Total Trade Value:{" "}
-                      {team1.reduce((a, c) => a + c.value, 0)}
-                    </h2>
-                  )}
-                  <ul className="bg-white shadow-lg rounded max-h-52 overflow-auto absolute top-72">
-                    {player1 &&
-                      suggestions.map((s) => {
-                        return (
-                          <li
-                            key={`1${s}`}
-                            className="py-2 px-2 hover:bg-cyan-600 cursor-pointer relative"
-                            onMouseDown={(e) => e.preventDefault()}
-                            onClick={
-                              s === "No Player Found"
-                                ? () => {
-                                    setSuggestions([]);
-                                    setPlayer1("");
-                                  }
-                                : (e) => handleAddPlayer(e, 1)
-                            }
-                          >
-                            {s}
-                          </li>
-                        );
-                      })}
-                  </ul>
-                </div>
-              </div>
-            </section>
-            <section className="flex grow shrink-0 gap-4 basis-2/3">
-              <div className="w-full gap-1 flex flex-col">
-                <div className="px-2 py-4 flex justify-between">
-                  <span className="basis-3/6">Name</span>
-                  <span className="basis-1/6">Team</span>
-                  <span className="basis-1/6">Value</span>
-                  {!analyzed && <span className="basis-1/6">Remove</span>}
-                </div>
-                {team1.map(({ name, team, value }) => {
-                  return (
-                    <div
-                      key={`1${name}`}
-                      className="px-2 py-4 border-solid border-black border-2 rounded flex justify-between"
-                    >
-                      <span className="basis-3/6">{name}</span>
-                      <span className="basis-1/6">{team}</span>
-                      <span className="basis-1/6">{value}</span>
-                      {!analyzed && (
-                        <button
-                          onClick={() => handleRemovePlayer(name, 1)}
-                          className="basis-1/6"
-                        >
-                          -
-                        </button>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-            </section>
-          </section>
-          <section className="flex flex-col shrink-0 grow justify-evenly gap-4 p-4 basis-1/2">
-            <section className="flex justify-evenly gap-2 py-4 basis-1/3">
-              <div
-                id="team2-input"
-                className="flex gap-2 flex-col justify-evenly w-full"
-              >
-                <label htmlFor="team2">Team 2</label>
-                <div className="gap-1 flex-col flex">
-                  {!analyzed ? (
-                    <input
-                      className="rounded px-2 py-4 w-full"
-                      name="team2"
-                      type="text"
-                      value={player2}
-                      placeholder="Player Name"
-                      onBlur={() => {
-                        setSuggestions([]);
-                        setPlayer2("");
-                      }}
-                      onChange={(e) => onChange(e, 2)}
-                    />
-                  ) : (
-                    <h2 className="px-4 py-2 bg-red-500 rounded">
-                      Total Trade Value:{" "}
-                      {team2.reduce((a, c) => a + c.value, 0)}
-                    </h2>
-                  )}
-                  <ul className="bg-white shadow-lg rounded max-h-52 overflow-auto absolute top-72">
-                    {player2 &&
-                      suggestions.map((s) => {
-                        return (
-                          <li
-                            key={`2${s}`}
-                            className="py-2 px-2 hover:bg-cyan-600 cursor-pointer relative"
-                            onMouseDown={(e) => e.preventDefault()}
-                            onClick={
-                              s === "No Player Found"
-                                ? () => {
-                                    setSuggestions([]);
-                                    setPlayer2("");
-                                  }
-                                : (e) => handleAddPlayer(e, 2)
-                            }
-                          >
-                            {s}
-                          </li>
-                        );
-                      })}
-                  </ul>
-                </div>
-              </div>
-            </section>
-            <section className="flex grow shrink-0 gap-4 basis-2/3">
-              <div className="w-full gap-1 flex flex-col">
-                <div className="px-2 py-4 flex justify-between">
-                  <span className="basis-3/6">Name</span>
-                  <span className="basis-1/6">Team</span>
-                  <span className="basis-1/6">Value</span>
-                  {!analyzed && <span className="basis-1/6">Remove</span>}
-                </div>
-                {team2.map(({ name, team, value }) => {
-                  return (
-                    <div
-                      key={`2${name}`}
-                      className="px-2 py-4 border-solid border-black border-2 rounded flex justify-between"
-                    >
-                      <span className="basis-3/6">{name}</span>
-                      <span className="basis-1/6">{team}</span>
-                      <span className="basis-1/6">{value}</span>
-                      {!analyzed && (
-                        <button
-                          onClick={() => handleRemovePlayer(name, 2)}
-                          className="basis-1/6"
-                        >
-                          -
-                        </button>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-            </section>
-          </section>
+        <section className="flex flex-wrap basis-3/5">
+          <Team
+            analyzed={analyzed}
+            player={player1}
+            suggestions={suggestions}
+            setSuggestions={setSuggestions}
+            setPlayer={setPlayer1}
+            handleAddPlayer={handleAddPlayer}
+            handleRemovePlayer={handleRemovePlayer}
+            onChange={onChange}
+            teamNum={1}
+            team={team1}
+          />
+          <Team
+            analyzed={analyzed}
+            player={player2}
+            suggestions={suggestions}
+            setSuggestions={setSuggestions}
+            setPlayer={setPlayer2}
+            handleAddPlayer={handleAddPlayer}
+            handleRemovePlayer={handleRemovePlayer}
+            onChange={onChange}
+            teamNum={2}
+            team={team2}
+          />
         </section>
         <div className="basis-1/5 py-8 w-full flex flex-col items-center gap-4 max-w-screen-lg">
           {analyzed && (
@@ -356,7 +236,7 @@ export default function Home() {
             </button>
           )}
           <button
-            disabled={team1.length === 0 || team2.length === 0}
+            disabled={team1.team.length === 0 || team2.team.length === 0}
             className="px-2 py-4 bg-cyan-600 rounded w-64"
             onClick={() => handleAnalyze()}
           >
@@ -372,13 +252,11 @@ export default function Home() {
 {
   /* Trending players from sleeper */
 }
-{
-  /* <iframe
-        src="https://sleeper.app/embed/players/nfl/trending/add?lookback_hours=24&limit=25"
-        width="350"
-        height="500"
-      ></iframe> */
-}
+//  <iframe
+//         src="https://sleeper.app/embed/players/nfl/trending/add?lookback_hours=24&limit=25"
+//         width="350"
+//         height="500"
+//       ></iframe>
 
 // ---------- table version of team comp ----------
 // <table className="basis-1/2 gap-0.5 table-fixed border-spacing-2">

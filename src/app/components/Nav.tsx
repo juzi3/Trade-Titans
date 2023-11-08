@@ -4,9 +4,11 @@ const Nav = () => {
   const [navOpen, setNavOpen] = useState(false);
 
   return (
-    <nav className="bg-white w-full py-4 px-2">
+    <nav className="bg-white w-full py-4 px-2 fixed">
       <div className="max-w-screen-lg flex justify-between mx-auto">
-        <div>Logo</div>
+        <div>
+          <a href="/">Logo</a>
+        </div>
         <div className="hidden sm:flex justify-evenly w-3/4 max-w-screen-md">
           <div className="hover:bg-emerald-200 p-2 rounded">Rankings</div>
           <div className="hover:bg-emerald-200 p-2 rounded">Stats</div>
