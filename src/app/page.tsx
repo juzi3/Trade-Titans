@@ -184,7 +184,7 @@ export default function Home() {
       <Nav />
       <section className="min-h-screen pb-48 pt-24">
         <header className="basis-1/5 py-8 max-w-screen-lg px-2">
-          <h1>Trade Analyzer</h1>
+          <h1 className="font-bold text-lg">Fantasy Football Trade Analyzer</h1>
           <p>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptates
             alias mollitia aperiam et quibusdam non? Rerum voluptatibus, tempore
@@ -193,11 +193,16 @@ export default function Home() {
           </p>
         </header>
         {analyzed && (
-          <section className="flex justify-between w-64 bg-red-500 rounded px-2 py-4 max-w-screen-lg mx-auto">
-            <div>
-              <h1>Make trade</h1>
+          <section className="flex justify-center w-64 bg-red-500 rounded px-2 py-4 max-w-screen-lg mx-auto">
+            <div className="flex">
+              <h1 className="text-center">
+                {Math.abs(team1.totalValue - team2.totalValue) <= 2
+                  ? "Fair Trade!"
+                  : team1.totalValue > team2.totalValue
+                  ? "Trade Favors Team 1"
+                  : "Trade Favors Team 2"}
+              </h1>
             </div>
-            <div>X or Check</div>
           </section>
         )}
         <section className="flex flex-wrap basis-3/5">
@@ -243,6 +248,18 @@ export default function Home() {
             {analyzed ? "Start New Trade" : "Analyze Trade"}
           </button>
         </div>
+        <section className="basis-1/5 py-8 max-w-screen-lg px-2">
+          <h1 className="font-bold text-lg">How To Use The Trade Analyzer</h1>
+          <p>
+            Start by typing the names of the players involved on both sides of
+            the trade. When all players have been selected, click the
+            &apos;Analyze Trade&apos; button. The total value from each side of
+            the trade will be displayed and the analyzer will suggest whether or
+            not to make the trade. Remember, these are just suggestions based
+            off of the players you have selected and does not take into account
+            the rest of the players on either team.
+          </p>
+        </section>
       </section>
       <Footer />
     </main>
