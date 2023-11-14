@@ -182,7 +182,7 @@ export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center mx-auto relative">
       <Nav />
-      <section className="min-h-screen pb-48 pt-24">
+      <section id="home-page" className="min-h-screen pb-48 pt-24">
         <header className="basis-1/5 py-8 max-w-screen-lg px-2">
           <h1 className="font-bold text-lg">Fantasy Football Trade Analyzer</h1>
           <p>

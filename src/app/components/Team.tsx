@@ -34,7 +34,7 @@ const Team = ({
   team,
 }: TeamProps) => {
   return (
-    <section className="flex flex-col shrink-0 grow sm:grow-0 justify-evenly gap-4 p-4 sm:basis-1/2">
+    <section className="flex flex-col shrink-0 grow sm:grow-0 justify-evenly gap-4 p-4 sm:basis-1/2 z-40">
       <section className="flex justify-evenly gap-2 py-4 basis-1/3">
         <div
           id="team1-input"
