@@ -2,10 +2,10 @@
 
 import Layout from "../components/Layout";
 
-export default function Tools() {
+export default function Articles() {
   return (
     <Layout>
-      <h1 className="font-bold">Temp Tools Page</h1>
+      <h1 className="font-bold">Temp Articles Page</h1>
     </Layout>
   );
 }

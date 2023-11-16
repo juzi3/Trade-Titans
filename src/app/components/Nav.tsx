@@ -1,89 +1,154 @@
-import { useState } from "react";
-import { Menu0 } from "./Menu0";
-import { Menu1 } from "./Menu1";
-import { Menu2 } from "./Menu2";
-import { Menu3 } from "./Menu3";
+import { useRef, useState } from "react";
+import { RankingsMenu } from "./RankingsMenu";
+import { StatsMenu } from "./StatsMenu";
+import { ToolsMenu } from "./ToolsMenu";
+import { ArticlesMenu } from "./ArticlesMenu";
+import { SlideWrapper } from "./SlideWrapper";
+import Link from "next/link";
 
 const Nav = () => {
   const [navOpen, setNavOpen] = useState(false);
   const [hovering, setHovering] = useState<number | null>(null);
   const [popoverLeft, setPopoverLeft] = useState<number | null>(null);
+  const [popoverCenter, setPopoverCenter] = useState<number | null>(null);
   const [popoverHeight, setPopoverHeight] = useState<number | null>(null);
+  const [popoverWidth, setPopoverWidth] = useState<number | null>(null);
+  const refs = useRef<(HTMLElement | null)[]>([]);
+
+  const handleOnFocus = (
+    idx: number,
+    // e:
+    //   | React.MouseEvent<HTMLAnchorElement, MouseEvent>
+    //   | React.FocusEvent<HTMLAnchorElement, Element>
+    e: any
+  ) => {
+    const target = e.target.getBoundingClientRect();
+    // console.log(target, e.target, "first console.log");
+    setHovering(idx);
+    // setPopoverLeft(e.currentTarget.offsetLeft);
+    setPopoverCenter(
+      e.currentTarget.offsetLeft - e.currentTarget.offsetWidth / 2
+    );
+    const menuElement = refs.current[idx];
+    if (menuElement) {
+      setPopoverHeight(menuElement.offsetHeight);
+      // setPopoverWidth(menuElement.offsetWidth);
+    }
+  };
 
   return (
     <nav
-      className="bg-white w-full py-4 px-2 fixed z-50"
+      className="bg-white w-full fixed z-50"
+      // onMouseEnter={() => setHovering(null)}
       onMouseLeave={() => setHovering(null)}
     >
-      <div className="max-w-screen-lg flex justify-between mx-auto">
+      <div
+        className="max-w-screen-lg flex justify-between mx-auto py-4 px-2"
+        onMouseLeave={() => setHovering(null)}
+      >
         <div>
-          <a href="/">Logo</a>
+          <Link href="/">Logo</Link>
         </div>
-        <div className="hidden sm:flex justify-evenly w-3/4 max-w-screen-md">
-          <a
+        <div className="basis-1/5" onMouseEnter={() => setHovering(null)}></div>
+        <div className="hidden relative sm:flex justify-evenly w-3/4 max-w-screen-md">
+          <Link
             href="/rankings"
-            className="hover:bg-emerald-200 p-2 rounded"
-            onMouseEnter={(e) => {
-              setHovering(0);
-              setPopoverLeft(e.currentTarget.offsetLeft);
-            }}
+            onFocus={(e) => handleOnFocus(0, e)}
+            onMouseEnter={(e) => handleOnFocus(0, e)}
+            className="flex gap-1 hover:bg-emerald-200 p-2 rounded"
           >
             Rankings
-          </a>
-          <a
+            <p
+              className={`transition-rotate transform max-h-10 ${
+                hovering === 0 ? "rotate-180" : "rotate-0"
+              }`}
+            >
+              &#9663;
+            </p>
+          </Link>
+          <Link
             href="/stats"
-            className="hover:bg-emerald-200 p-2 rounded"
-            onMouseEnter={(e) => {
-              setHovering(1);
-              setPopoverLeft(e.currentTarget.offsetLeft);
-            }}
+            onFocus={(e) => handleOnFocus(1, e)}
+            onMouseEnter={(e) => handleOnFocus(1, e)}
+            className="flex gap-1 hover:bg-emerald-200 p-2 rounded"
           >
             Stats
-          </a>
-          <a
+            <p
+              className={`transition-rotate transform max-h-10 ${
+                hovering === 1 ? "rotate-180" : "rotate-0"
+              }`}
+            >
+              &#9663;
+            </p>
+          </Link>
+          <Link
             href="/tools"
-            className="hover:bg-emerald-200 p-2 rounded"
-            onMouseEnter={(e) => {
-              setHovering(2);
-              setPopoverLeft(e.currentTarget.offsetLeft);
-            }}
+            onFocus={(e) => handleOnFocus(2, e)}
+            onMouseEnter={(e) => handleOnFocus(2, e)}
+            className="flex gap-1 hover:bg-emerald-200 p-2 rounded"
           >
             Tools
-          </a>
-          <a
+            <p
+              className={`transition-rotate transform max-h-10 ${
+                hovering === 2 ? "rotate-180" : "rotate-0"
+              }`}
+            >
+              &#9663;
+            </p>
+          </Link>
+          <Link
             href="/articles"
-            className="hover:bg-emerald-200 p-2 rounded"
-            onMouseEnter={(e) => {
-              setHovering(3);
-              setPopoverLeft(e.currentTarget.offsetLeft);
-            }}
+            onFocus={(e) => handleOnFocus(3, e)}
+            onMouseEnter={(e) => handleOnFocus(3, e)}
+            className="flex gap-1 hover:bg-emerald-200 p-2 rounded"
           >
             Articles
-          </a>
-          <a
+            <p
+              className={`transition-rotate transform max-h-10 ${
+                hovering === 3 ? "rotate-180" : "rotate-0"
+              }`}
+            >
+              &#9663;
+            </p>
+          </Link>
+          <Link
             href="/news"
-            className="hover:bg-emerald-200 p-2 rounded"
+            className="flex gap-1 hover:bg-emerald-200 p-2 rounded"
             onMouseEnter={() => setHovering(null)}
           >
             News
-          </a>
+          </Link>
+          {typeof hovering === "number" && (
+            <div
+              className={`absolute top-14 shadow-lg bg-white rounded transition-all ${
+                hovering !== null
+                  ? "opacity-100"
+                  : "opacity-0 pointer-events-none"
+              } duration-300`}
+              style={{
+                // left: popoverLeft || 0,
+                // left: popoverLeft / 2 || 0,
+                left: popoverCenter || 0,
+                height: popoverHeight || 300,
+                width: hovering === 0 ? 350 : hovering === 2 ? 200 : 150,
+                // width: popoverWidth || 300,
+              }}
+            >
+              <SlideWrapper index={0} hovering={hovering}>
+                <RankingsMenu ref={(element) => (refs.current[0] = element)} />
+              </SlideWrapper>
+              <SlideWrapper index={1} hovering={hovering}>
+                <StatsMenu ref={(element) => (refs.current[1] = element)} />
+              </SlideWrapper>
+              <SlideWrapper index={2} hovering={hovering}>
+                <ToolsMenu ref={(element) => (refs.current[2] = element)} />
+              </SlideWrapper>
+              <SlideWrapper index={3} hovering={hovering}>
+                <ArticlesMenu ref={(element) => (refs.current[3] = element)} />
+              </SlideWrapper>
+            </div>
+          )}
         </div>
-        {typeof hovering === "number" && (
-          <div
-            className="absolute top-20 shadow-lg bg-white p-5 rounded w-[600px] transition-all duration-300"
-            style={{ left: popoverLeft ?? 0 }}
-          >
-            {hovering === 0 ? (
-              <Menu0 />
-            ) : hovering === 1 ? (
-              <Menu1 />
-            ) : hovering === 2 ? (
-              <Menu2 />
-            ) : hovering === 3 ? (
-              <Menu3 />
-            ) : null}
-          </div>
-        )}
         <div
           id="burger-menu"
           className="flex flex-col justify-evenly sm:hidden"
@@ -103,22 +168,22 @@ const Nav = () => {
           <div className="absolute right-0 top-14 bg-white/90 h-screen w-screen">
             <ul className="p-4 flex flex-col items-center h-1/3 justify-evenly text-center">
               <li className="bg-emerald-700 w-full rounded">
-                <a href="/">Home</a>
+                <Link href="/">Home</Link>
               </li>
               <li className="bg-emerald-700 w-full rounded">
-                <a href="/rankings">Rankings</a>
+                <Link href="/rankings">Rankings</Link>
               </li>
               <li className="bg-emerald-700 w-full rounded">
-                <a href="/stats">Stats</a>
+                <Link href="/stats">Stats</Link>
               </li>
               <li className="bg-emerald-700 w-full rounded">
-                <a href="/tools">Tools</a>
+                <Link href="/tools">Tools</Link>
               </li>
               <li className="bg-emerald-700 w-full rounded">
-                <a href="/articles">Articles</a>
+                <Link href="/articles">Articles</Link>
               </li>
               <li className="bg-emerald-700 w-full rounded">
-                <a href="/news">News</a>
+                <Link href="/news">News</Link>
               </li>
             </ul>
           </div>

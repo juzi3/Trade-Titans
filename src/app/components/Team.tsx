@@ -34,13 +34,15 @@ const Team = ({
   team,
 }: TeamProps) => {
   return (
-    <section className="flex flex-col shrink-0 grow sm:grow-0 justify-evenly gap-4 p-4 sm:basis-1/2 z-40">
-      <section className="flex justify-evenly gap-2 py-4 basis-1/3">
+    <section className="flex flex-col shrink-0 grow sm:grow-0 justify-start gap-4 p-4 sm:basis-1/2 z-40">
+      <section className="flex gap-2 py-4 basis-1/3 max-h-[88px]">
         <div
-          id="team1-input"
-          className="flex gap-2 flex-col justify-evenly w-full"
+          id={teamNum === 1 ? "team1-input" : "team2-input"}
+          className="flex gap-2 flex-col  w-full"
         >
-          <label htmlFor="team1">{teamNum === 1 ? "Team 1" : "Team 2"}</label>
+          <label htmlFor={teamNum === 1 ? "team1" : "team2"}>
+            {teamNum === 1 ? "Team 1" : "Team 2"}
+          </label>
           <div className="gap-1 flex-col flex relative">
             {!analyzed ? (
               <input

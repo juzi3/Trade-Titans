@@ -5,6 +5,7 @@ import Players from "../../SampleData";
 import Nav from "./components/Nav";
 import Footer from "./components/Footer";
 import Team from "./components/Team";
+import Layout from "./components/Layout";
 
 interface TeamState {
   totalValue: number;
@@ -29,7 +30,10 @@ export default function Home() {
   // useEffect(() => {
   //   const fetchData = async () => {
   //     const res = await fetch(
-  //       "https://sports.core.api.espn.com/v2/sports/football/leagues/nfl/athletes/3918298/statistics?lang=en&region=us"
+  //       //       //       "https://sports.core.api.espn.com/v2/sports/football/leagues/nfl/athletes/3918298/statistics?lang=en&region=us"
+  //       //       // "https://sports.core.api.espn.com/v2/sports/football/leagues/nfl/athletes?limit=1000&active=true"
+  //       //       // "https://fantasy.espn.com/apis/v3/games/ffl/seasons/2023/players?view=players_wl"
+  //       "https://api.sportsdata.io/api/nfl/fantasy/json/Players"
   //     );
   //     const data = await res.json();
 
@@ -46,16 +50,20 @@ export default function Home() {
   ) => {
     console.log("handleAddPlayer fired!");
     // check which team is adding player
+    const target = e.target as HTMLElement;
     if (teamNum === 1) {
       // if player input is empty or team already has player do nothing
-      if (!player1 || team1.team.includes(e.target.innerText)) {
+      if (
+        !player1 ||
+        team1.team.some(({ name }) => name === target.innerText)
+      ) {
         setPlayer1("");
         setSuggestions([]);
         return;
       }
 
       const match = Players.filter(
-        ({ name }) => name.toLowerCase() === e.target.innerText.toLowerCase()
+        ({ name }) => name.toLowerCase() === target.innerText.toLowerCase()
       );
       const matchObj = {
         name: match[0].name,
@@ -71,13 +79,16 @@ export default function Home() {
       // clear player input
       setPlayer1("");
     } else {
-      if (!player2 || team2.team.includes(e.target.innerText)) {
+      if (
+        !player2 ||
+        team2.team.some(({ name }) => name === target.innerText)
+      ) {
         setPlayer2("");
         setSuggestions([]);
         return;
       }
       const match = Players.filter(
-        ({ name }) => name.toLowerCase() === e.target.innerText.toLowerCase()
+        ({ name }) => name.toLowerCase() === target.innerText.toLowerCase()
       );
       const matchObj = {
         name: match[0].name,
@@ -102,7 +113,7 @@ export default function Home() {
     if (teamNum === 1) {
       // find index of player in team array
       // let playerIdx = team1.indexOf(playerName);
-      let playerIdx;
+      let playerIdx = 0;
       for (let i = 0; i < team1.team.length; i++) {
         if (team1.team[i].name === playerName) {
           playerIdx = i;
@@ -120,7 +131,7 @@ export default function Home() {
         team: newTeam,
       });
     } else {
-      let playerIdx;
+      let playerIdx = 0;
       for (let i = 0; i < team2.team.length; i++) {
         if (team2.team[i].name === playerName) {
           playerIdx = i;
@@ -180,9 +191,10 @@ export default function Home() {
   };
 
   return (
-    <main className="flex min-h-screen flex-col items-center mx-auto relative">
-      <Nav />
-      <section id="home-page" className="min-h-screen pb-48 pt-24">
+    // <main className="flex min-h-screen flex-col items-center mx-auto relative">
+    //   <Nav />
+    <Layout>
+      <section id="home-page" className="min-h-screen">
         <header className="basis-1/5 py-8 max-w-screen-lg px-2">
           <h1 className="font-bold text-lg">Fantasy Football Trade Analyzer</h1>
           <p>
@@ -261,8 +273,9 @@ export default function Home() {
           </p>
         </section>
       </section>
-      <Footer />
-    </main>
+    </Layout>
+    //   <Footer />
+    // </main>
   );
 }
 
