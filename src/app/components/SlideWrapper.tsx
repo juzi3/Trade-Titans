@@ -14,7 +14,7 @@ export const SlideWrapper = ({
       }${
         hovering === index
           ? "transform-none"
-          : hovering > index
+          : hovering && hovering > index
           ? "-translate-x-24"
           : "translate-x-24"
       }`}
