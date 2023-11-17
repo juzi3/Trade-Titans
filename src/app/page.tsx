@@ -2,14 +2,31 @@
 
 import React, { useEffect, useState } from "react";
 import Players from "../../SampleData";
-import Nav from "./components/Nav";
-import Footer from "./components/Footer";
 import Team from "./components/Team";
 import Layout from "./components/Layout";
+import { sql } from "@vercel/postgres";
+import { GET } from "./api/getPlayers/route";
+import { GetServerSideProps } from "next";
+import prisma from "../lib/prisma";
+import { createData, fetchPlayers } from "@/lib/test";
 
 interface TeamState {
   totalValue: number;
-  team: { name: string; teamName: string; value: number }[];
+  team: { name: string; teamName: string; value: number; image: string }[];
+}
+
+// async function getPlayer() {
+//   const players = await prisma.player.findMany();
+//   return players;
+// }
+async function getPlayer() {
+  const players = await fetchPlayers();
+  return players;
+}
+
+async function addPlayer() {
+  const added = await createData();
+  return added;
 }
 
 export default function Home() {
@@ -28,20 +45,24 @@ export default function Home() {
 
   // fetch player info on load, prob should just have player info in a db, fetching players everytime too costly
   // useEffect(() => {
-  //   const fetchData = async () => {
-  //     const res = await fetch(
-  //       //       //       "https://sports.core.api.espn.com/v2/sports/football/leagues/nfl/athletes/3918298/statistics?lang=en&region=us"
-  //       //       // "https://sports.core.api.espn.com/v2/sports/football/leagues/nfl/athletes?limit=1000&active=true"
-  //       //       // "https://fantasy.espn.com/apis/v3/games/ffl/seasons/2023/players?view=players_wl"
-  //       "https://api.sportsdata.io/api/nfl/fantasy/json/Players"
-  //     );
-  //     const data = await res.json();
+  //   // const fetchData = async () => {
+  //   //   const res = await fetch(
+  //   //     //       //       "https://sports.core.api.espn.com/v2/sports/football/leagues/nfl/athletes/3918298/statistics?lang=en&region=us"
+  //   //     //       // "https://sports.core.api.espn.com/v2/sports/football/leagues/nfl/athletes?limit=1000&active=true"
+  //   //     //       // "https://fantasy.espn.com/apis/v3/games/ffl/seasons/2023/players?view=players_wl"
+  //   //     "https://api.sportsdata.io/api/nfl/fantasy/json/Players"
+  //   //   );
+  //   //   const data = await res.json();
 
-  //     // setSuggestions2(data);
-  //     console.log(data, "data from api");
-  //   };
+  //   //   // setSuggestions2(data);
+  //   //   console.log(data, "data from api");
+  //   // };
 
-  //   fetchData();
+  //   // fetchData();
+  //   // };
+
+  //   const res = getPlayer();
+  //   console.log(res);
   // }, []);
 
   const handleAddPlayer = (
@@ -271,6 +292,16 @@ export default function Home() {
             off of the players you have selected and does not take into account
             the rest of the players on either team.
           </p>
+          <button
+            className="bg-cyan-300 p-4"
+            onClick={async () => {
+              const added = addPlayer();
+              const res = getPlayer();
+              console.log("res from home: ", res, added);
+            }}
+          >
+            Test Endpoint
+          </button>
         </section>
       </section>
     </Layout>

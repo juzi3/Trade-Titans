@@ -156,3 +156,32 @@ const Players = [
 ];
 
 export default Players;
+
+// Team ID from football API
+{/* 
+Teams
+[
+  {
+    Las Vegas Raiders: 1
+  },
+  {
+    Jacksonville Jaguars: 2
+  },
+  {
+    New England Patriots: 3
+  },
+  {
+    New York Giants: 4
+  },
+  {
+    Houston Texans: 26
+  }
+]
+
+Players:
+[
+  {
+    Trevor Lawrence: 69
+  }
+]
+*/}

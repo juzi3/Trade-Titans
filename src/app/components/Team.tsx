@@ -1,8 +1,9 @@
+import Image from "next/image";
 import Suggestions from "./Suggestions";
 
 interface TeamState {
   totalValue: number;
-  team: { name: string; teamName: string; value: number }[];
+  team: { name: string; teamName: string; value: number; image: string }[];
 }
 
 interface TeamProps {
@@ -81,13 +82,21 @@ const Team = ({
             <span className="basis-1/6">Value</span>
             {!analyzed && <span className="basis-1/6">Remove</span>}
           </div>
-          {team.team.map(({ name, teamName, value }) => {
+          {team.team.map(({ name, teamName, value, image }) => {
             return (
               <div
                 key={`${teamNum === 1 ? 1 : 2}${name}`}
                 className="px-2 py-4 border-solid border-black border-2 rounded flex justify-between"
               >
-                <span className="basis-3/6">{name}</span>
+                <span className="basis-3/6">
+                  <Image
+                    src={image}
+                    alt="Player Image"
+                    width={25}
+                    height={25}
+                  />
+                  {name}
+                </span>
                 <span className="basis-1/6">{teamName}</span>
                 <span className="basis-1/6">{value}</span>
                 {!analyzed && (
