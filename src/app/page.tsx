@@ -42,6 +42,7 @@ export default function Home() {
   });
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [analyzed, setAnalyzed] = useState(false);
+  const [data, setData] = useState("");
 
   // fetch player info on load, prob should just have player info in a db, fetching players everytime too costly
   // useEffect(() => {
@@ -61,8 +62,18 @@ export default function Home() {
   //   // fetchData();
   //   // };
 
-  //   const res = getPlayer();
-  //   console.log(res);
+  //   // const res = getPlayer();
+  //   // console.log(res);
+
+  //   const fetchData = async () => {
+  //     console.log("fd fired!");
+  //     const res = await fetch("/api/hello");
+  //     const data = await res.json();
+  //     setData(data.message);
+  //     // console.log(data.message);
+  //   };
+
+  //   fetchData();
   // }, []);
 
   const handleAddPlayer = (
@@ -90,6 +101,7 @@ export default function Home() {
         name: match[0].name,
         teamName: match[0].team,
         value: match[0].tradeValue,
+        image: match[0].image,
       };
       // else add player to current team array
       // setTeam1([...team1, matchObj]);
@@ -115,6 +127,7 @@ export default function Home() {
         name: match[0].name,
         teamName: match[0].team,
         value: match[0].tradeValue,
+        image: match[0].image,
       };
       // else add player to current team array
       // setTeam2([...team2, matchObj]);
@@ -212,8 +225,6 @@ export default function Home() {
   };
 
   return (
-    // <main className="flex min-h-screen flex-col items-center mx-auto relative">
-    //   <Nav />
     <Layout>
       <section id="home-page" className="min-h-screen">
         <header className="basis-1/5 py-8 max-w-screen-lg px-2">
@@ -226,7 +237,7 @@ export default function Home() {
           </p>
         </header>
         {analyzed && (
-          <section className="flex justify-center w-64 bg-red-500 rounded px-2 py-4 max-w-screen-lg mx-auto">
+          <section className="flex justify-center w-64 bg-red text-light-secondary rounded px-2 py-4 max-w-screen-lg mx-auto">
             <div className="flex">
               <h1 className="text-center">
                 {Math.abs(team1.totalValue - team2.totalValue) <= 2
@@ -267,7 +278,7 @@ export default function Home() {
         <div className="basis-1/5 py-8 w-full flex flex-col items-center gap-4 max-w-screen-lg">
           {analyzed && (
             <button
-              className="px-2 py-4 bg-white rounded w-64"
+              className="px-2 py-4 bg-gradient-to-r from-cyan to-dark-secondary rounded w-64 text-white"
               onClick={() => setAnalyzed(false)}
             >
               Edit Current Trade
@@ -275,7 +286,7 @@ export default function Home() {
           )}
           <button
             disabled={team1.team.length === 0 || team2.team.length === 0}
-            className="px-2 py-4 bg-cyan-600 rounded w-64"
+            className="px-2 py-4 bg-dark-secondary rounded w-64"
             onClick={() => handleAnalyze()}
           >
             {analyzed ? "Start New Trade" : "Analyze Trade"}
@@ -294,19 +305,17 @@ export default function Home() {
           </p>
           <button
             className="bg-cyan-300 p-4"
-            onClick={async () => {
-              const added = addPlayer();
-              const res = getPlayer();
-              console.log("res from home: ", res, added);
-            }}
+            // onClick={async () => {
+            //   const added = addPlayer();
+            //   const res = getPlayer();
+            //   console.log("res from home: ", res, added);
+            // }}
           >
-            Test Endpoint
+            {data}
           </button>
         </section>
       </section>
     </Layout>
-    //   <Footer />
-    // </main>
   );
 }
 

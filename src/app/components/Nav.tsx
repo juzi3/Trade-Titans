@@ -5,6 +5,11 @@ import { ToolsMenu } from "./ToolsMenu";
 import { ArticlesMenu } from "./ArticlesMenu";
 import { SlideWrapper } from "./SlideWrapper";
 import Link from "next/link";
+import { Permanent_Marker } from "next/font/google";
+import Image from "next/image";
+import logo from "../../../public/assets/FFTA-Logo-Light.png";
+
+const permanentMarker = Permanent_Marker({ weight: "400", subsets: ["latin"] });
 
 const Nav = () => {
   const [navOpen, setNavOpen] = useState(false);
@@ -38,7 +43,7 @@ const Nav = () => {
 
   return (
     <nav
-      className="bg-white w-full fixed z-50"
+      className="bg-dark-secondary w-full fixed z-50 h-20 shadow-lg"
       // onMouseEnter={() => setHovering(null)}
       onMouseLeave={() => setHovering(null)}
     >
@@ -47,15 +52,17 @@ const Nav = () => {
         onMouseLeave={() => setHovering(null)}
       >
         <div>
-          <Link href="/">Logo</Link>
+          <Link href="/">
+            <Image src={logo} alt="Trade Titans Logo" height={60} />
+          </Link>
         </div>
         <div className="basis-1/5" onMouseEnter={() => setHovering(null)}></div>
-        <div className="hidden relative sm:flex justify-evenly w-3/4 max-w-screen-md">
+        <div className="hidden relative sm:flex justify-evenly w-3/4 max-w-screen-md items-center">
           <Link
             href="/rankings"
             onFocus={(e) => handleOnFocus(0, e)}
             onMouseEnter={(e) => handleOnFocus(0, e)}
-            className="flex gap-1 hover:bg-emerald-200 p-2 rounded"
+            className="flex gap-1 hover:bg-white p-2 rounded"
           >
             Rankings
             <p
@@ -70,7 +77,7 @@ const Nav = () => {
             href="/stats"
             onFocus={(e) => handleOnFocus(1, e)}
             onMouseEnter={(e) => handleOnFocus(1, e)}
-            className="flex gap-1 hover:bg-emerald-200 p-2 rounded"
+            className="flex gap-1 hover:bg-white p-2 rounded"
           >
             Stats
             <p
@@ -85,7 +92,7 @@ const Nav = () => {
             href="/tools"
             onFocus={(e) => handleOnFocus(2, e)}
             onMouseEnter={(e) => handleOnFocus(2, e)}
-            className="flex gap-1 hover:bg-emerald-200 p-2 rounded"
+            className="flex gap-1 hover:bg-white p-2 rounded"
           >
             Tools
             <p
@@ -100,7 +107,7 @@ const Nav = () => {
             href="/articles"
             onFocus={(e) => handleOnFocus(3, e)}
             onMouseEnter={(e) => handleOnFocus(3, e)}
-            className="flex gap-1 hover:bg-emerald-200 p-2 rounded"
+            className="flex gap-1 hover:bg-white p-2 rounded"
           >
             Articles
             <p
@@ -113,14 +120,14 @@ const Nav = () => {
           </Link>
           <Link
             href="/news"
-            className="flex gap-1 hover:bg-emerald-200 p-2 rounded"
+            className="flex gap-1 hover:bg-white p-2 rounded"
             onMouseEnter={() => setHovering(null)}
           >
             News
           </Link>
           {typeof hovering === "number" && (
             <div
-              className={`absolute top-14 shadow-lg bg-white rounded transition-all ${
+              className={`absolute top-12 shadow-lg bg-white rounded transition-all ${
                 hovering !== null
                   ? "opacity-100"
                   : "opacity-0 pointer-events-none"

@@ -35,7 +35,7 @@ const Team = ({
   team,
 }: TeamProps) => {
   return (
-    <section className="flex flex-col shrink-0 grow sm:grow-0 justify-start gap-4 p-4 sm:basis-1/2 z-40">
+    <section className="flex flex-col shrink-0 grow sm:grow-0 justify-start gap-4 p-4 sm:basis-1/2">
       <section className="flex gap-2 py-4 basis-1/3 max-h-[88px]">
         <div
           id={teamNum === 1 ? "team1-input" : "team2-input"}
@@ -59,7 +59,7 @@ const Team = ({
                 onChange={(e) => onChange(e, teamNum)}
               />
             ) : (
-              <h2 className="px-4 py-2 bg-red-500 rounded">
+              <h2 className="px-4 py-2 bg-red text-light-secondary rounded">
                 Total Trade Value: {team.totalValue}
               </h2>
             )}
@@ -76,35 +76,48 @@ const Team = ({
       </section>
       <section className="flex grow shrink-0 gap-4 basis-2/3">
         <div className="w-full gap-1 flex flex-col">
-          <div className="px-2 py-4 flex justify-between">
-            <span className="basis-3/6">Name</span>
-            <span className="basis-1/6">Team</span>
-            <span className="basis-1/6">Value</span>
-            {!analyzed && <span className="basis-1/6">Remove</span>}
+          <div className="px-2 py-4 flex justify-between text-sm">
+            <span className="basis-[57.1428571%]">Name</span>
+            <span className="basis-[14.2857143%] justify-center flex">
+              Team
+            </span>
+            <span className="basis-[14.2857143%] justify-center flex">
+              Value
+            </span>
+            {!analyzed && (
+              <span className="basis-[14.2857143%] justify-center flex">
+                Remove
+              </span>
+            )}
           </div>
           {team.team.map(({ name, teamName, value, image }) => {
             return (
               <div
                 key={`${teamNum === 1 ? 1 : 2}${name}`}
-                className="px-2 py-4 border-solid border-black border-2 rounded flex justify-between"
+                className="px-2 py-4 border-solid border-black border-2 rounded flex justify-between items-center text-sm"
               >
-                <span className="basis-3/6">
+                <span className="basis-[57.1428571%] flex items-center gap-2">
                   <Image
                     src={image}
                     alt="Player Image"
-                    width={25}
-                    height={25}
+                    width={50}
+                    height={50}
+                    style={{ objectFit: "contain" }}
                   />
                   {name}
                 </span>
-                <span className="basis-1/6">{teamName}</span>
-                <span className="basis-1/6">{value}</span>
+                <span className="basis-[14.2857143%] justify-center flex">
+                  {teamName}
+                </span>
+                <span className="basis-[14.2857143%] justify-center flex">
+                  {value}
+                </span>
                 {!analyzed && (
                   <button
                     onClick={() => handleRemovePlayer(name, teamNum)}
-                    className="basis-1/6"
+                    className="basis-[14.2857143%] text-red justify-center flex font-black text-2xl"
                   >
-                    -
+                    X
                   </button>
                 )}
               </div>
