@@ -48,7 +48,7 @@ const Nav = () => {
       onMouseLeave={() => setHovering(null)}
     >
       <div
-        className="max-w-screen-lg flex justify-between mx-auto py-4 px-2"
+        className="max-w-screen-lg flex justify-between items-center mx-auto py-4 px-2"
         onMouseLeave={() => setHovering(null)}
       >
         <div>
@@ -158,7 +158,7 @@ const Nav = () => {
         </div>
         <div
           id="burger-menu"
-          className="flex flex-col justify-evenly sm:hidden"
+          className="h-8 flex flex-col justify-evenly sm:hidden"
           onClick={() => {
             setNavOpen(!navOpen);
             const homePage = document.getElementById("home-page");
@@ -167,30 +167,49 @@ const Nav = () => {
             footer[0].classList.toggle("blur-sm");
           }}
         >
-          <div className="bg-black w-6 h-0.5"></div>
-          <div className="bg-black w-6 h-0.5"></div>
-          <div className="bg-black w-6 h-0.5"></div>
+          <div
+            className={`bg-black w-7 h-1 rounded transition-all duration-300 ease-out ${
+              navOpen ? "-rotate-45 translate-y-1.5" : "translate-y-0"
+            }`}
+          ></div>
+          <div
+            className={`bg-black w-7 h-1 rounded transition-all duration-300 ease-out ${
+              navOpen ? "rotate-45 -translate-y-1.5" : "translate-y-0"
+            }`}
+          ></div>
         </div>
         {navOpen && (
-          <div className="absolute right-0 top-14 bg-white/90 h-screen w-screen">
-            <ul className="p-4 flex flex-col items-center h-1/3 justify-evenly text-center">
-              <li className="bg-emerald-700 w-full rounded">
-                <Link href="/">Home</Link>
+          <div className="absolute right-0 top-20 bg-light-secondary/90 h-screen w-screen backdrop-blur-sm">
+            <ul className="py-4 flex flex-col items-center h-1/3 justify-evenly text-center">
+              <li className="w-full border-b-solid border-b py-3 border-b-dark-secondary/50">
+                <Link className="font-medium" href="/">
+                  Home
+                </Link>
               </li>
-              <li className="bg-emerald-700 w-full rounded">
-                <Link href="/rankings">Rankings</Link>
+              <li className="w-full border-b-solid border-b py-3 border-b-dark-secondary/50">
+                <Link className="font-medium" href="/rankings">
+                  Rankings
+                </Link>
               </li>
-              <li className="bg-emerald-700 w-full rounded">
-                <Link href="/stats">Stats</Link>
+              <li className="w-full border-b-solid border-b py-3 border-b-dark-secondary/50">
+                <Link className="font-medium" href="/stats">
+                  Stats
+                </Link>
               </li>
-              <li className="bg-emerald-700 w-full rounded">
-                <Link href="/tools">Tools</Link>
+              <li className="w-full border-b-solid border-b py-3 border-b-dark-secondary/50">
+                <Link className="font-medium" href="/tools">
+                  Tools
+                </Link>
               </li>
-              <li className="bg-emerald-700 w-full rounded">
-                <Link href="/articles">Articles</Link>
+              <li className="w-full border-b-solid border-b py-3 border-b-dark-secondary/50">
+                <Link className="font-medium" href="/articles">
+                  Articles
+                </Link>
               </li>
-              <li className="bg-emerald-700 w-full rounded">
-                <Link href="/news">News</Link>
+              <li className="w-full border-b-solid border-b py-3 border-b-dark-secondary/50">
+                <Link className="font-medium" href="/news">
+                  News
+                </Link>
               </li>
             </ul>
           </div>
