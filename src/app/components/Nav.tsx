@@ -180,33 +180,33 @@ const Nav = () => {
         </div>
         {navOpen && (
           <div className="absolute right-0 top-20 bg-light-secondary/90 h-screen w-screen backdrop-blur-sm">
-            <ul className="py-4 flex flex-col items-center h-1/3 justify-evenly text-center">
-              <li className="w-full border-b-solid border-b py-3 border-b-dark-secondary/50">
+            <ul className="py-4 flex flex-col items-center h-2/5 justify-evenly text-center">
+              <li className="w-full border-b-solid border-b py-4 border-b-dark-secondary/50">
                 <Link className="font-medium" href="/">
                   Home
                 </Link>
               </li>
-              <li className="w-full border-b-solid border-b py-3 border-b-dark-secondary/50">
+              <li className="w-full border-b-solid border-b py-4 border-b-dark-secondary/50">
                 <Link className="font-medium" href="/rankings">
                   Rankings
                 </Link>
               </li>
-              <li className="w-full border-b-solid border-b py-3 border-b-dark-secondary/50">
+              <li className="w-full border-b-solid border-b py-4 border-b-dark-secondary/50">
                 <Link className="font-medium" href="/stats">
                   Stats
                 </Link>
               </li>
-              <li className="w-full border-b-solid border-b py-3 border-b-dark-secondary/50">
+              <li className="w-full border-b-solid border-b py-4 border-b-dark-secondary/50">
                 <Link className="font-medium" href="/tools">
                   Tools
                 </Link>
               </li>
-              <li className="w-full border-b-solid border-b py-3 border-b-dark-secondary/50">
+              <li className="w-full border-b-solid border-b py-4 border-b-dark-secondary/50">
                 <Link className="font-medium" href="/articles">
                   Articles
                 </Link>
               </li>
-              <li className="w-full border-b-solid border-b py-3 border-b-dark-secondary/50">
+              <li className="w-full border-b-solid border-b py-4 border-b-dark-secondary/50">
                 <Link className="font-medium" href="/news">
                   News
                 </Link>
