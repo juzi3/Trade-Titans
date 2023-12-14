@@ -41,7 +41,10 @@ const Team = ({
           id={teamNum === 1 ? "team1-input" : "team2-input"}
           className="flex gap-2 flex-col  w-full"
         >
-          <label htmlFor={teamNum === 1 ? "team1" : "team2"}>
+          <label
+            htmlFor={teamNum === 1 ? "team1" : "team2"}
+            className="font-medium"
+          >
             {teamNum === 1 ? "Team 1" : "Team 2"}
           </label>
           <div className="gap-1 flex-col flex relative">

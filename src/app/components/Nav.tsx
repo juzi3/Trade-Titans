@@ -176,7 +176,7 @@ const Nav = () => {
         </div>
         {navOpen && (
           <div className="absolute right-0 top-20 bg-light-secondary/90 h-screen w-screen backdrop-blur-md">
-            <ul className="mt-2 py-4 flex flex-col items-center h-2/5 justify-evenly text-center">
+            <ul className="py-4 flex flex-col items-center h-96 justify-evenly text-center">
               <li className="w-full border-b-solid border-b py-4 border-b-dark-secondary/50">
                 <Link
                   className="font-medium"
