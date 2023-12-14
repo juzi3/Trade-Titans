@@ -62,7 +62,7 @@ const Nav = () => {
             href="/rankings"
             onFocus={(e) => handleOnFocus(0, e)}
             onMouseEnter={(e) => handleOnFocus(0, e)}
-            className="flex gap-1 hover:bg-white p-2 rounded"
+            className="flex gap-1 hover:bg-white p-2 rounded font-medium"
           >
             Rankings
             <p
@@ -77,7 +77,7 @@ const Nav = () => {
             href="/stats"
             onFocus={(e) => handleOnFocus(1, e)}
             onMouseEnter={(e) => handleOnFocus(1, e)}
-            className="flex gap-1 hover:bg-white p-2 rounded"
+            className="flex gap-1 hover:bg-white p-2 rounded font-medium"
           >
             Stats
             <p
@@ -92,7 +92,7 @@ const Nav = () => {
             href="/tools"
             onFocus={(e) => handleOnFocus(2, e)}
             onMouseEnter={(e) => handleOnFocus(2, e)}
-            className="flex gap-1 hover:bg-white p-2 rounded"
+            className="flex gap-1 hover:bg-white p-2 rounded font-medium"
           >
             Tools
             <p
@@ -107,7 +107,7 @@ const Nav = () => {
             href="/articles"
             onFocus={(e) => handleOnFocus(3, e)}
             onMouseEnter={(e) => handleOnFocus(3, e)}
-            className="flex gap-1 hover:bg-white p-2 rounded"
+            className="flex gap-1 hover:bg-white p-2 rounded font-medium"
           >
             Articles
             <p
@@ -120,7 +120,7 @@ const Nav = () => {
           </Link>
           <Link
             href="/news"
-            className="flex gap-1 hover:bg-white p-2 rounded"
+            className="flex gap-1 hover:bg-white p-2 rounded font-medium"
             onMouseEnter={() => setHovering(null)}
           >
             News
@@ -161,10 +161,6 @@ const Nav = () => {
           className="h-8 flex flex-col justify-evenly sm:hidden"
           onClick={() => {
             setNavOpen(!navOpen);
-            const homePage = document.getElementById("home-page");
-            homePage?.classList.toggle("blur-sm");
-            const footer = document.getElementsByTagName("footer");
-            footer[0].classList.toggle("blur-sm");
           }}
         >
           <div
@@ -179,35 +175,71 @@ const Nav = () => {
           ></div>
         </div>
         {navOpen && (
-          <div className="absolute right-0 top-20 bg-light-secondary/90 h-screen w-screen backdrop-blur-sm">
-            <ul className="py-4 flex flex-col items-center h-2/5 justify-evenly text-center">
+          <div className="absolute right-0 top-20 bg-light-secondary/90 h-screen w-screen backdrop-blur-md">
+            <ul className="mt-2 py-4 flex flex-col items-center h-2/5 justify-evenly text-center">
               <li className="w-full border-b-solid border-b py-4 border-b-dark-secondary/50">
-                <Link className="font-medium" href="/">
+                <Link
+                  className="font-medium"
+                  onClick={() => {
+                    setNavOpen(!navOpen);
+                  }}
+                  href="/"
+                >
                   Home
                 </Link>
               </li>
               <li className="w-full border-b-solid border-b py-4 border-b-dark-secondary/50">
-                <Link className="font-medium" href="/rankings">
+                <Link
+                  className="font-medium"
+                  onClick={() => {
+                    setNavOpen(!navOpen);
+                  }}
+                  href="/rankings"
+                >
                   Rankings
                 </Link>
               </li>
               <li className="w-full border-b-solid border-b py-4 border-b-dark-secondary/50">
-                <Link className="font-medium" href="/stats">
+                <Link
+                  className="font-medium"
+                  onClick={() => {
+                    setNavOpen(!navOpen);
+                  }}
+                  href="/stats"
+                >
                   Stats
                 </Link>
               </li>
               <li className="w-full border-b-solid border-b py-4 border-b-dark-secondary/50">
-                <Link className="font-medium" href="/tools">
+                <Link
+                  className="font-medium"
+                  onClick={() => {
+                    setNavOpen(!navOpen);
+                  }}
+                  href="/tools"
+                >
                   Tools
                 </Link>
               </li>
               <li className="w-full border-b-solid border-b py-4 border-b-dark-secondary/50">
-                <Link className="font-medium" href="/articles">
+                <Link
+                  className="font-medium"
+                  onClick={() => {
+                    setNavOpen(!navOpen);
+                  }}
+                  href="/articles"
+                >
                   Articles
                 </Link>
               </li>
               <li className="w-full border-b-solid border-b py-4 border-b-dark-secondary/50">
-                <Link className="font-medium" href="/news">
+                <Link
+                  className="font-medium"
+                  onClick={() => {
+                    setNavOpen(!navOpen);
+                  }}
+                  href="/news"
+                >
                   News
                 </Link>
               </li>
