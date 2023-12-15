@@ -3,7 +3,7 @@ import Suggestions from "./Suggestions";
 
 interface TeamState {
   totalValue: number;
-  team: { name: string; teamName: string; value: number; image: string }[];
+  team: { name: string; teamName: string; value: number; id: string }[];
 }
 
 interface TeamProps {
@@ -50,7 +50,7 @@ const Team = ({
           <div className="gap-1 flex-col flex relative">
             {!analyzed ? (
               <input
-                className="rounded px-2 py-4 w-full"
+                className="rounded px-2 py-4 w-full border border-dark-primary/40"
                 name={teamNum === 1 ? "team1" : "team2"}
                 type="text"
                 value={player}
@@ -93,7 +93,7 @@ const Team = ({
               </span>
             )}
           </div>
-          {team.team.map(({ name, teamName, value, image }) => {
+          {team.team.map(({ id, name, teamName, value }) => {
             return (
               <div
                 key={`${teamNum === 1 ? 1 : 2}${name}`}
@@ -101,7 +101,7 @@ const Team = ({
               >
                 <span className="basis-[57.1428571%] flex items-center gap-2">
                   <Image
-                    src={image}
+                    src={`https://media-4.api-sports.io/american-football/players/${id}.png`}
                     alt="Player Image"
                     width={50}
                     height={50}

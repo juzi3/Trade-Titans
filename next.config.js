@@ -4,7 +4,7 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "media.api-sports.io",
+        hostname: "media-4.api-sports.io",
         port: "",
         pathname: "/american-football/players/**",
       },

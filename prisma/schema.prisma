@@ -10,20 +10,19 @@ datasource db {
   directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
 }
 
-model Player {
+model player {
   id       String @id @default(cuid())
-  Name     String
-  Team     Team   @relation(fields: [teamId], references: [id])
+  name     String
+  team     team   @relation(fields: [teamId], references: [id])
   teamId   String
-  Position String
-  Image    String
-  Value    Int
+  position String
+  value    Int
 }
 
-model Team {
+model team {
   id           String   @id @default(cuid())
-  Name         String
-  Abbreviation String
-  City         String
-  Player       Player[]
+  name         String
+  abbreviation String
+  city         String
+  player       player[]
 }

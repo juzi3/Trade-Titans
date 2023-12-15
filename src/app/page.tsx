@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import Players from "../../SampleData";
+import React, { useEffect, useMemo, useRef, useState } from "react";
+// import Players from "../../SampleData";
 import Team from "./components/Team";
 import Layout from "./components/Layout";
 import { sql } from "@vercel/postgres";
@@ -10,9 +10,28 @@ import { GetServerSideProps } from "next";
 import prisma from "../lib/prisma";
 import { createData, fetchPlayers } from "@/lib/test";
 
+interface Teams {
+  id: string;
+  name: string;
+  abbreviation: string;
+  city: string;
+  player: any[];
+}
+
+interface Player {
+  id: string;
+  name: string;
+  teamId?: string;
+  teamName?: string;
+  position?: string;
+  image?: string | null;
+  value: number;
+}
+
 interface TeamState {
   totalValue: number;
-  team: { name: string; teamName: string; value: number; image: string }[];
+  // team: { name: string; teamName: string; value: number; image: string }[];
+  team: Player[];
 }
 
 // async function getPlayer() {
@@ -21,7 +40,12 @@ interface TeamState {
 // }
 async function getPlayer() {
   const players = await fetchPlayers();
-  return players;
+  return players.res;
+}
+
+async function getTeams() {
+  const players = await fetchPlayers();
+  return players.res2;
 }
 
 async function addPlayer() {
@@ -43,38 +67,51 @@ export default function Home() {
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [analyzed, setAnalyzed] = useState(false);
   const [data, setData] = useState("");
+  const [Players, setPlayers] = useState<Player[]>([]);
+  const [teams, setTeams] = useState<Teams[]>([]);
+  console.log("players", Players, "teams", teams);
+
+  const ref = useRef(null);
 
   // fetch player info on load, prob should just have player info in a db, fetching players everytime too costly
-  // useEffect(() => {
-  //   // const fetchData = async () => {
-  //   //   const res = await fetch(
-  //   //     //       //       "https://sports.core.api.espn.com/v2/sports/football/leagues/nfl/athletes/3918298/statistics?lang=en&region=us"
-  //   //     //       // "https://sports.core.api.espn.com/v2/sports/football/leagues/nfl/athletes?limit=1000&active=true"
-  //   //     //       // "https://fantasy.espn.com/apis/v3/games/ffl/seasons/2023/players?view=players_wl"
-  //   //     "https://api.sportsdata.io/api/nfl/fantasy/json/Players"
-  //   //   );
-  //   //   const data = await res.json();
+  useEffect(() => {
+    // const fetchData = async () => {
+    //   //   const res = await fetch(
+    //   //     //       //       "https://sports.core.api.espn.com/v2/sports/football/leagues/nfl/athletes/3918298/statistics?lang=en&region=us"
+    //   //     //       // "https://sports.core.api.espn.com/v2/sports/football/leagues/nfl/athletes?limit=1000&active=true"
+    //   //     //       // "https://fantasy.espn.com/apis/v3/games/ffl/seasons/2023/players?view=players_wl"
+    //   //     "https://api.sportsdata.io/api/nfl/fantasy/json/Players"
+    //   //   );
+    //   //   const data = await res.json();
+    //   //   // setSuggestions2(data);
+    //   //   console.log(data, "data from api");
+    //   // };
+    //   // fetchData();
+    //   // };
+    //   const res = await getPlayer();
+    //   console.log(res);
+    //   // const fetchData = async () => {
+    //   //   console.log("fd fired!");
+    //   //   const res = await fetch("/api/getPlayers");
+    //   //   const data = await res.json();
+    //   //   setData(data.message);
+    //   //   // console.log(data.message);
+    // };
+    // fetchData();
+    // console.log("useEffect", getPlayer());
+    async function getPlayer() {
+      const players = await fetchPlayers();
+      setPlayers(players.res);
+    }
+    getPlayer();
 
-  //   //   // setSuggestions2(data);
-  //   //   console.log(data, "data from api");
-  //   // };
-
-  //   // fetchData();
-  //   // };
-
-  //   // const res = getPlayer();
-  //   // console.log(res);
-
-  //   const fetchData = async () => {
-  //     console.log("fd fired!");
-  //     const res = await fetch("/api/hello");
-  //     const data = await res.json();
-  //     setData(data.message);
-  //     // console.log(data.message);
-  //   };
-
-  //   fetchData();
-  // }, []);
+    async function getTeams() {
+      const players = await fetchPlayers();
+      setTeams(players.res2);
+    }
+    getPlayer();
+    getTeams();
+  }, []);
 
   const handleAddPlayer = (
     e: React.MouseEvent<HTMLLIElement, MouseEvent>,
@@ -95,13 +132,15 @@ export default function Home() {
       }
 
       const match = Players.filter(
-        ({ name }) => name.toLowerCase() === target.innerText.toLowerCase()
+        ({ name }: { name: string }) =>
+          name.toLowerCase() === target.innerText.toLowerCase()
       );
+      console.log("match l112", match);
       const matchObj = {
+        id: match[0].id,
         name: match[0].name,
-        teamName: match[0].team,
-        value: match[0].tradeValue,
-        image: match[0].image,
+        teamName: teams[Number(match[0].teamId) - 1].abbreviation,
+        value: match[0].value,
       };
       // else add player to current team array
       // setTeam1([...team1, matchObj]);
@@ -121,13 +160,14 @@ export default function Home() {
         return;
       }
       const match = Players.filter(
-        ({ name }) => name.toLowerCase() === target.innerText.toLowerCase()
+        ({ name }: { name: string }) =>
+          name.toLowerCase() === target.innerText.toLowerCase()
       );
       const matchObj = {
+        id: match[0].id,
         name: match[0].name,
-        teamName: match[0].team,
-        value: match[0].tradeValue,
-        image: match[0].image,
+        teamName: teams[Number(match[0].teamId) - 1].abbreviation,
+        value: match[0].value,
       };
       // else add player to current team array
       // setTeam2([...team2, matchObj]);
@@ -189,10 +229,11 @@ export default function Home() {
     teamNum: number
   ) => {
     // check which team
-    let matches: { name: string }[] | null;
+    let matches;
+    // let matches: { name: string }[] | null;
     if (teamNum === 1) {
       setPlayer1(e.target.value.toLowerCase());
-      matches = Players.filter(({ name }) => {
+      matches = Players.filter(({ name }: { name: string }) => {
         return (
           name.toLowerCase().includes(player1) &&
           !team1.team.some((player) => player.name === name) &&
@@ -201,7 +242,7 @@ export default function Home() {
       });
     } else {
       setPlayer2(e.target.value.toLowerCase());
-      matches = Players.filter(({ name }) => {
+      matches = Players.filter(({ name }: { name: string }) => {
         return (
           name.toLowerCase().includes(player2) &&
           !team1.team.some((player) => player.name === name) &&
@@ -209,6 +250,7 @@ export default function Home() {
         );
       });
     }
+    console.log(matches, "in onChange");
     const justNames = matches.map(({ name }) => name);
     setSuggestions(justNames.length > 0 ? justNames : ["No Player Found"]);
   };
@@ -238,7 +280,7 @@ export default function Home() {
         </header>
         {analyzed && (
           <section className="flex justify-center w-64 bg-red text-light-secondary rounded px-2 py-4 max-w-screen-lg mx-auto">
-            <div className="flex">
+            <div className="flex" ref={ref}>
               <h1 className="text-center">
                 {Math.abs(team1.totalValue - team2.totalValue) <= 2
                   ? "Fair Trade!"
@@ -287,7 +329,10 @@ export default function Home() {
           <button
             disabled={team1.team.length === 0 || team2.team.length === 0}
             className="px-2 py-4 bg-dark-secondary rounded w-64"
-            onClick={() => handleAnalyze()}
+            onClick={() => {
+              handleAnalyze();
+              if (!analyzed) ref.current.scrollIntoView();
+            }}
           >
             {analyzed ? "Start New Trade" : "Analyze Trade"}
           </button>
@@ -303,16 +348,15 @@ export default function Home() {
             off of the players you have selected and does not take into account
             the rest of the players on either team.
           </p>
-          <button
-            className="bg-cyan-300 p-4"
-            // onClick={async () => {
-            //   const added = addPlayer();
-            //   const res = getPlayer();
-            //   console.log("res from home: ", res, added);
-            // }}
+          {/* <button
+            className="bg-dark-secondary p-4"
+            onClick={async () => {
+              const added = await addPlayer();
+              console.log("res from home: ");
+            }}
           >
-            {data}
-          </button>
+            TEst
+          </button> */}
         </section>
       </section>
     </Layout>

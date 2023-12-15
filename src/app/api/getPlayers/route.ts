@@ -21,10 +21,14 @@ export async function GET() {
   // const client = await db.connect({
   //   POSTGRES_URL: process.env.developmental.local.POSTGRES_URL,
   // });
-  // const searchedResults =
-  //   await sql`SELECT * FROM Players WHERE position('t' in name)>0;`; //how to find searched player`
+  //     const searchedResults = await prisma.player.findMany({
+  //       where: {
+  //         id: "2",
+  //       },
+  //     });
+  // console.log(searchedResults, "in getPlayers route");
+  //   await sql`SELECT * FROM player WHERE position('t' in name)>0;`; //how to find searched player`
   // return NextResponse.json({ searchedResults }, { status: 200 });
-
   // finds all players and teams
   const res = await prisma.player.findMany();
   const res2 = await prisma.team.findMany();
