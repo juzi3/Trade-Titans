@@ -69,7 +69,6 @@ export async function POST(req: Request) {
             },
           },
           position: "",
-          image: "",
           value: 0,
         },
       });
