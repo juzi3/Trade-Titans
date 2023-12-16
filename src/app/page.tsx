@@ -71,7 +71,7 @@ export default function Home() {
   const [teams, setTeams] = useState<Teams[]>([]);
   console.log("players", Players, "teams", teams);
 
-  const ref = useRef(null);
+  // const ref = useRef(null);
 
   // fetch player info on load, prob should just have player info in a db, fetching players everytime too costly
   useEffect(() => {
@@ -280,7 +280,7 @@ export default function Home() {
         </header>
         {analyzed && (
           <section className="flex justify-center w-64 bg-red text-light-secondary rounded px-2 py-4 max-w-screen-lg mx-auto">
-            <div className="flex" ref={ref}>
+            <div className="flex">
               <h1 className="text-center">
                 {Math.abs(team1.totalValue - team2.totalValue) <= 2
                   ? "Fair Trade!"
@@ -329,10 +329,7 @@ export default function Home() {
           <button
             disabled={team1.team.length === 0 || team2.team.length === 0}
             className="px-2 py-4 bg-dark-secondary rounded w-64"
-            onClick={() => {
-              handleAnalyze();
-              if (!analyzed) ref.current.scrollIntoView();
-            }}
+            onClick={() => handleAnalyze()}
           >
             {analyzed ? "Start New Trade" : "Analyze Trade"}
           </button>
