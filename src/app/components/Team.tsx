@@ -1,11 +1,29 @@
 import Image from "next/image";
 import Suggestions from "./Suggestions";
 
-interface TeamState {
-  totalValue: number;
-  team: { name: string; teamName: string; value: number; id: string }[];
+interface Teams {
+  id: string;
+  name: string;
+  abbreviation: string;
+  city: string;
+  player: any[];
 }
 
+interface Player {
+  id: string;
+  name: string;
+  teamId?: string;
+  teamName?: string;
+  position?: string;
+  image?: string | null;
+  value: number;
+}
+
+interface TeamState {
+  totalValue: number;
+  // team: { name: string; teamName: string; value: number; image: string }[];
+  team: Player[];
+}
 interface TeamProps {
   analyzed: boolean;
   player: string;

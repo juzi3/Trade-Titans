@@ -2,6 +2,16 @@ import { NextResponse } from "next/server";
 import prisma from "../../../lib/prisma";
 import type { NextApiRequest, NextApiResponse } from "next";
 
+interface Player {
+  id: string;
+  name: string;
+  teamId?: string;
+  teamName?: string;
+  position?: string;
+  image?: string | null;
+  value: number;
+}
+
 export async function POST(req: Request) {
   console.log("post req");
 
