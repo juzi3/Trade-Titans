@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import prisma from "../../../lib/prisma";
 import type { NextApiRequest, NextApiResponse } from "next";
+import { env } from "process";
 
 interface Player {
   id: string;
@@ -13,19 +14,6 @@ interface Player {
 }
 
 export async function POST(req: Request) {
-  console.log("post req");
-
-  //   await prisma.player.create({
-  //     data: {
-  //       Name: "Derek Carr",
-  //       Team: {
-  //         connect: { id: "1" },
-  //       },
-  //       Position: "QB",
-  //       Image: "https://media-4.api-sports.io/american-football/players/1.png",
-  //       Value: 0,
-  // }
-
   // from API
   // Player w/ stats
 
@@ -39,8 +27,8 @@ export async function POST(req: Request) {
   const options = {
     method: "GET",
     headers: {
-      "X-RapidAPI-Key": "45008274eemshb30b2c46851652dp14b744jsnd1ff12fcf0b0",
-      "X-RapidAPI-Host": "api-american-football.p.rapidapi.com",
+      "X-RapidAPI-Key": process.env.X_RAPIDAPI_KEY,
+      "X-RapidAPI-Host": process.env.X_RAPIDAPI_HOST,
     },
   };
 
@@ -68,12 +56,17 @@ export async function POST(req: Request) {
               id: String(result.response[0].teams[0].team.id),
             },
           },
+          image: "",
           position: "",
           value: 0,
         },
       });
       return NextResponse.json({ message: "successful add", res: result });
     }
+    return NextResponse.json({
+      message: "already added or defensive player",
+      res: result,
+    });
   } catch (error) {
     console.error(error);
     return NextResponse.json({ message: "add failed" });

@@ -34,10 +34,6 @@ interface TeamState {
   team: Player[];
 }
 
-// async function getPlayer() {
-//   const players = await prisma.player.findMany();
-//   return players;
-// }
 async function getPlayer() {
   const players = await fetchPlayers();
   return players.res;
@@ -75,30 +71,6 @@ export default function Home() {
 
   // fetch player info on load, prob should just have player info in a db, fetching players everytime too costly
   useEffect(() => {
-    // const fetchData = async () => {
-    //   //   const res = await fetch(
-    //   //     //       //       "https://sports.core.api.espn.com/v2/sports/football/leagues/nfl/athletes/3918298/statistics?lang=en&region=us"
-    //   //     //       // "https://sports.core.api.espn.com/v2/sports/football/leagues/nfl/athletes?limit=1000&active=true"
-    //   //     //       // "https://fantasy.espn.com/apis/v3/games/ffl/seasons/2023/players?view=players_wl"
-    //   //     "https://api.sportsdata.io/api/nfl/fantasy/json/Players"
-    //   //   );
-    //   //   const data = await res.json();
-    //   //   // setSuggestions2(data);
-    //   //   console.log(data, "data from api");
-    //   // };
-    //   // fetchData();
-    //   // };
-    //   const res = await getPlayer();
-    //   console.log(res);
-    //   // const fetchData = async () => {
-    //   //   console.log("fd fired!");
-    //   //   const res = await fetch("/api/getPlayers");
-    //   //   const data = await res.json();
-    //   //   setData(data.message);
-    //   //   // console.log(data.message);
-    // };
-    // fetchData();
-    // console.log("useEffect", getPlayer());
     async function getPlayer() {
       const players = await fetchPlayers();
       setPlayers(players.res);
@@ -230,7 +202,6 @@ export default function Home() {
   ) => {
     // check which team
     let matches;
-    // let matches: { name: string }[] | null;
     if (teamNum === 1) {
       setPlayer1(e.target.value.toLowerCase());
       matches = Players.filter(({ name }: { name: string }) => {
@@ -345,7 +316,7 @@ export default function Home() {
             off of the players you have selected and does not take into account
             the rest of the players on either team.
           </p>
-          {/* <button
+          <button
             className="bg-dark-secondary p-4"
             onClick={async () => {
               const added = await addPlayer();
@@ -353,74 +324,9 @@ export default function Home() {
             }}
           >
             TEst
-          </button> */}
+          </button>
         </section>
       </section>
     </Layout>
   );
 }
-
-{
-  /* Trending players from sleeper */
-}
-//  <iframe
-//         src="https://sleeper.app/embed/players/nfl/trending/add?lookback_hours=24&limit=25"
-//         width="350"
-//         height="500"
-//       ></iframe>
-
-// ---------- table version of team comp ----------
-// <table className="basis-1/2 gap-0.5 table-fixed border-spacing-2">
-//   <thead>
-//     <tr className="px-2 py-4 ">
-//       <th>Name</th>
-//       <th>Team</th>
-//       <th>Value</th>
-//       <th>Remove</th>
-//     </tr>
-//   </thead>
-//   <tbody>
-//     {team1.map((player) => {
-//       return (
-//         <tr
-//           key={`1${player}`}
-//           className="px-2 py-4 border-solid border-black border-2 rounded"
-//         >
-//           <td>{player}</td>
-//           <td>Team</td>
-//           <td>0</td>
-//           <button onClick={() => handleRemovePlayer(player, 1)}>
-//             -
-//           </button>
-//         </tr>
-//       );
-//     })}
-//   </tbody>
-// </table>
-// <table className="basis-1/2 gap-0.5 table-fixed border-spacing-2">
-//   <thead>
-//     <tr className="px-2 py-4 ">
-//       <th>Name</th>
-//       <th>Team</th>
-//       <th>Value</th>
-//       <th>Remove</th>
-//     </tr>
-//   </thead>
-//   <tbody>
-//     {team2.map((player) => {
-//       return (
-//         <tr
-//           key={`2${player}`}
-//           className="px-2 py-4 border-solid border-black border-2 rounded"
-//         >
-//           <td>{player}</td>
-//           <td>Team</td>
-//           <td>0</td>
-//           <button onClick={() => handleRemovePlayer(player, 2)}>
-//             -
-//           </button>
-//         </tr>
-//       );
-//     })}
-//   </tbody>
-// </table>
