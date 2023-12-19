@@ -1,3 +1,6 @@
+import * as dotenv from "dotenv";
+dotenv.config();
+
 import { NextResponse } from "next/server";
 
 interface Player {
