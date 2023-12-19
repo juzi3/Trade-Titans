@@ -4,10 +4,6 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 // import Players from "../../SampleData";
 import Team from "./components/Team";
 import Layout from "./components/Layout";
-import { sql } from "@vercel/postgres";
-import { GET } from "./api/getPlayers/route";
-import { GetServerSideProps } from "next";
-import prisma from "../lib/prisma";
 import { createData, fetchPlayers } from "@/lib/test";
 
 interface Teams {
@@ -48,6 +44,8 @@ async function addPlayer() {
   const added = await createData();
   return added;
 }
+
+const cache = {};
 
 export default function Home() {
   const [player1, setPlayer1] = useState("");
@@ -316,7 +314,7 @@ export default function Home() {
             off of the players you have selected and does not take into account
             the rest of the players on either team.
           </p>
-          <button
+          {/* <button
             className="bg-dark-secondary p-4"
             onClick={async () => {
               const added = await addPlayer();
@@ -324,7 +322,7 @@ export default function Home() {
             }}
           >
             TEst
-          </button>
+          </button> */}
         </section>
       </section>
     </Layout>

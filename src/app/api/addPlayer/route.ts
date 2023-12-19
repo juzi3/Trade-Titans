@@ -1,7 +1,4 @@
 import { NextResponse } from "next/server";
-import prisma from "../../../lib/prisma";
-import type { NextApiRequest, NextApiResponse } from "next";
-import { env } from "process";
 
 interface Player {
   id: string;
@@ -23,7 +20,10 @@ export async function POST(req: Request) {
   // console.log(id, "in for loop in addPlayer route");
   // return NextResponse.json({ message: "test successful" });
 
-  const url = `https://api-american-football.p.rapidapi.com/players/statistics?season=2023&id=${id}`;
+  // get by playerid
+  // const url = `https://api-american-football.p.rapidapi.com/players/statistics?season=2023&id=${id}`;
+  // get by team id
+  const url = `https://api-american-football.p.rapidapi.com/players/statistics?season=2023&team=${id}`;
   const options = {
     method: "GET",
     headers: {
@@ -35,34 +35,38 @@ export async function POST(req: Request) {
   try {
     const response = await fetch(url, options);
     const result = await response.json();
-    // console.log(result.response[0].teams, "team id");
-    const searchedResults = await prisma.player.findUnique({
-      where: {
-        id: String(result.response[0].player.id),
-      },
-    });
-    console.log(searchedResults, "addPlayer route");
 
-    if (
-      searchedResults === null &&
-      result.response[0].teams[0].groups[0].name !== "Defense"
-    ) {
-      await prisma.player.create({
-        data: {
-          id: String(result.response[0].player.id),
-          name: String(result.response[0].player.name),
-          team: {
-            connect: {
-              id: String(result.response[0].teams[0].team.id),
-            },
-          },
-          image: "",
-          position: "",
-          value: 0,
-        },
-      });
-      return NextResponse.json({ message: "successful add", res: result });
-    }
+    // for (const { player, teams } of result.response)
+    //   result.response.map(async ({ player, teams }) => {
+    //     const searchedResults = await prisma.player.findUnique({
+    //       where: {
+    //         id: String(player.id),
+    //       },
+    //     });
+    //     console.log(searchedResults, "addPlayer route");
+
+    //     if (searchedResults === null && teams[0].groups[0].name !== "Defense") {
+    //       await prisma.player.create({
+    //         data: {
+    //           id: String(player.id),
+    //           name: String(player.name),
+    //           team: {
+    //             connect: {
+    //               id: String(teams[0].team.id),
+    //             },
+    //           },
+    //           image: "",
+    //           position: "",
+    //           value: 0,
+    //         },
+    //       });
+    //       return NextResponse.json({ message: "successful add", res: result });
+    //     }
+    //     return NextResponse.json({
+    //       message: "already added or defensive player",
+    //       res: result,
+    //     });
+    //   });
     return NextResponse.json({
       message: "already added or defensive player",
       res: result,

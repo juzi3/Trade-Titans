@@ -5,21 +5,31 @@ export const fetchPlayers = async () => {
 };
 
 export const createData = async () => {
-  console.log("createData");
+  console.log("createData fired!");
   let res;
-  for (let i = 2107; i < 2407; i++) {
-    res = await fetch("/api/addPlayer", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-      body: JSON.stringify({
-        id: i,
-      }),
-    });
-    if (i === 2406) console.log(i);
-  }
+  // for (let i = 3; i < 33; i++) {
+  //   res = await fetch("/api/addPlayer", {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       Accept: "application/json",
+  //     },
+  //     body: JSON.stringify({
+  //       id: i,
+  //     }),
+  //   });
+  //   if (i === 32) console.log(i);
+  // }
+  // const res = await fetch("/api/addPlayer", {
+  //   method: "POST",
+  //   headers: {
+  //     "Content-Type": "application/json",
+  //     Accept: "application/json",
+  //   },
+  //   body: JSON.stringify({
+  //     id: 2,
+  //   }),
+  // });
 
   // const data = await res.json();
   return res.json();
