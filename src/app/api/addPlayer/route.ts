@@ -1,6 +1,3 @@
-import * as dotenv from "dotenv";
-dotenv.config();
-
 import { NextResponse } from "next/server";
 
 interface Player {
@@ -30,8 +27,8 @@ export async function POST(req: Request) {
   const options = {
     method: "GET",
     headers: {
-      "X-RapidAPI-Key": process.env.X_RAPIDAPI_KEY,
-      "X-RapidAPI-Host": process.env.X_RAPIDAPI_HOST,
+      "X-RapidAPI-Key": process.env.X_RAPIDAPI_KEY as string,
+      "X-RapidAPI-Host": process.env.X_RAPIDAPI_HOST as string,
     },
   };
 
