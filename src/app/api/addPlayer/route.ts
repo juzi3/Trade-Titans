@@ -11,14 +11,8 @@ interface Player {
 }
 
 export async function POST(req: Request) {
-  // from API
-  // Player w/ stats
-
-  // const { i } = req.body;
+  // declare the id, this is only used for adding players to db
   const { id } = await req.json();
-
-  // console.log(id, "in for loop in addPlayer route");
-  // return NextResponse.json({ message: "test successful" });
 
   // get by playerid
   // const url = `https://api-american-football.p.rapidapi.com/players/statistics?season=2023&id=${id}`;
@@ -36,6 +30,7 @@ export async function POST(req: Request) {
     const response = await fetch(url, options);
     const result = await response.json();
 
+    // this is for adding players to db
     // for (const { player, teams } of result.response)
     //   result.response.map(async ({ player, teams }) => {
     //     const searchedResults = await prisma.player.findUnique({

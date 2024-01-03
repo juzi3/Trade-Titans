@@ -1,10 +1,9 @@
 "use client";
 
-import React, { useEffect, useMemo, useRef, useState } from "react";
-// import Players from "../../SampleData";
+import React, { useEffect, useRef, useState } from "react";
 import Team from "./components/Team";
 import Layout from "./components/Layout";
-import { createData, fetchPlayers } from "@/lib/test";
+import { createData, fetchPlayers } from "@/lib/helpers";
 
 interface Teams {
   id: string;
@@ -26,18 +25,17 @@ interface Player {
 
 interface TeamState {
   totalValue: number;
-  // team: { name: string; teamName: string; value: number; image: string }[];
   team: Player[];
 }
 
-async function getPlayer() {
-  const players = await fetchPlayers();
-  return players.res;
+async function getPlayer(player = "") {
+  const players = await fetchPlayers(player);
+  return players.searchRes;
 }
 
 async function getTeams() {
-  const players = await fetchPlayers();
-  return players.res2;
+  const players = await fetchPlayers("");
+  return players.teams;
 }
 
 async function addPlayer() {
@@ -45,7 +43,9 @@ async function addPlayer() {
   return added;
 }
 
-const cache = {};
+const cache: {
+  [key: string]: Player[];
+} = {};
 
 export default function Home() {
   const [player1, setPlayer1] = useState("");
@@ -60,36 +60,45 @@ export default function Home() {
   });
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [analyzed, setAnalyzed] = useState(false);
-  const [data, setData] = useState("");
-  const [Players, setPlayers] = useState<Player[]>([]);
   const [teams, setTeams] = useState<Teams[]>([]);
-  console.log("players", Players, "teams", teams);
 
   // const ref = useRef(null);
 
-  // fetch player info on load, prob should just have player info in a db, fetching players everytime too costly
-  useEffect(() => {
-    async function getPlayer() {
-      const players = await fetchPlayers();
-      setPlayers(players.res);
-    }
-    getPlayer();
+  // checks if player is in cache, if not fetch player from db
+  const playerCache = async (player: string) => {
+    console.log(cache, "cache");
+    if (player in cache) return cache[player];
+    cache[player] = await getPlayer(player);
+    return cache[player];
+  };
 
-    async function getTeams() {
-      const players = await fetchPlayers();
-      setTeams(players.res2);
+  // fetch player and team info from db on load
+  useEffect(() => {
+    async function fetchTeam() {
+      // add empty player search to cache
+      await playerCache(" ");
+      // get teams from backend
+      const teamData = await getTeams();
+      setTeams(teamData);
     }
-    getPlayer();
-    getTeams();
+
+    fetchTeam();
   }, []);
 
-  const handleAddPlayer = (
+  const handleAddPlayer = async (
     e: React.MouseEvent<HTMLLIElement, MouseEvent>,
     teamNum: number
   ) => {
     console.log("handleAddPlayer fired!");
     // check which team is adding player
     const target = e.target as HTMLElement;
+    const match = await playerCache(target.innerText);
+    const matchObj = {
+      id: match[0].id,
+      name: match[0].name,
+      teamName: teams[Number(match[0].teamId) - 1].abbreviation,
+      value: match[0].value,
+    };
     if (teamNum === 1) {
       // if player input is empty or team already has player do nothing
       if (
@@ -100,20 +109,7 @@ export default function Home() {
         setSuggestions([]);
         return;
       }
-
-      const match = Players.filter(
-        ({ name }: { name: string }) =>
-          name.toLowerCase() === target.innerText.toLowerCase()
-      );
-      console.log("match l112", match);
-      const matchObj = {
-        id: match[0].id,
-        name: match[0].name,
-        teamName: teams[Number(match[0].teamId) - 1].abbreviation,
-        value: match[0].value,
-      };
       // else add player to current team array
-      // setTeam1([...team1, matchObj]);
       setTeam1({
         totalValue: team1.totalValue + matchObj.value,
         team: [...team1.team, matchObj],
@@ -129,18 +125,7 @@ export default function Home() {
         setSuggestions([]);
         return;
       }
-      const match = Players.filter(
-        ({ name }: { name: string }) =>
-          name.toLowerCase() === target.innerText.toLowerCase()
-      );
-      const matchObj = {
-        id: match[0].id,
-        name: match[0].name,
-        teamName: teams[Number(match[0].teamId) - 1].abbreviation,
-        value: match[0].value,
-      };
       // else add player to current team array
-      // setTeam2([...team2, matchObj]);
       setTeam2({
         totalValue: team2.totalValue + matchObj.value,
         team: [...team2.team, matchObj],
@@ -194,33 +179,27 @@ export default function Home() {
     }
   };
 
-  const onChange = (
+  const onChange = async (
     e: React.ChangeEvent<HTMLInputElement>,
     teamNum: number
   ) => {
     // check which team
     let matches;
     if (teamNum === 1) {
-      setPlayer1(e.target.value.toLowerCase());
-      matches = Players.filter(({ name }: { name: string }) => {
-        return (
-          name.toLowerCase().includes(player1) &&
-          !team1.team.some((player) => player.name === name) &&
-          !team2.team.some((player) => player.name === name)
-        );
-      });
+      setPlayer1(e.target.value);
+      matches = await playerCache(player1);
     } else {
-      setPlayer2(e.target.value.toLowerCase());
-      matches = Players.filter(({ name }: { name: string }) => {
-        return (
-          name.toLowerCase().includes(player2) &&
-          !team1.team.some((player) => player.name === name) &&
-          !team2.team.some((player) => player.name === name)
-        );
-      });
+      setPlayer2(e.target.value);
+      matches = await playerCache(player2);
     }
     console.log(matches, "in onChange");
-    const justNames = matches.map(({ name }) => name);
+    const justNames = matches
+      .map(({ name }) => name)
+      .filter(
+        (name) =>
+          !team1.team.some((player) => player.name === name) &&
+          !team2.team.some((player) => player.name === name)
+      );
     setSuggestions(justNames.length > 0 ? justNames : ["No Player Found"]);
   };
 
@@ -241,10 +220,11 @@ export default function Home() {
         <header className="basis-1/5 py-8 max-w-screen-lg px-2">
           <h1 className="font-bold text-lg">Fantasy Football Trade Analyzer</h1>
           <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptates
-            alias mollitia aperiam et quibusdam non? Rerum voluptatibus, tempore
-            ad ratione nemo fugit, totam sapiente odit amet facilis culpa animi
-            quidem.
+            Welcome to Trade Titans, your premier destination for mastering the
+            art of strategic player exchanges in the dynamic realm of fantasy
+            football. Whether you &apos;re a seasoned fantasy football veteran
+            or a newcomer to the game, our user-friendly interface empowers you
+            to optimize your roster and dominate your league.
           </p>
         </header>
         {analyzed && (
@@ -314,17 +294,19 @@ export default function Home() {
             off of the players you have selected and does not take into account
             the rest of the players on either team.
           </p>
-          {/* <button
-            className="bg-dark-secondary p-4"
-            onClick={async () => {
-              const added = await addPlayer();
-              console.log("res from home: ");
-            }}
-          >
-            TEst
-          </button> */}
         </section>
       </section>
     </Layout>
   );
 }
+
+// button for adding players
+/* <button
+  className="bg-dark-secondary p-4"
+  onClick={async () => {
+    const added = await addPlayer();
+    console.log("res from home: ");
+  }}
+>
+  TEst
+</button> */

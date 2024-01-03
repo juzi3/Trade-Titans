@@ -21,7 +21,6 @@ interface Player {
 
 interface TeamState {
   totalValue: number;
-  // team: { name: string; teamName: string; value: number; image: string }[];
   team: Player[];
 }
 interface TeamProps {
