@@ -7,35 +7,36 @@ export const fetchPlayers = async (search: string) => {
 };
 
 // adds active players from all teams to db, if not in db already
-// export const createData = async () => {
-//   console.log("createData fired!");
-//   let res;
+export const createData = async () => {
+  console.log("createData fired!");
+  // let res;
 
-//   // for (let i = 1; i < 33; i++) {
-//   const data = await res.json();
-//   //   res = await fetch("/api/addPlayer", {
-//   //     method: "POST",
-//   //     headers: {
-//   //       "Content-Type": "application/json",
-//   //       Accept: "application/json",
-//   //     },
-//   //     body: JSON.stringify({
-//   //       id: i,
-//   //     }),
-//   //   });
-//   //   if (i === 32) console.log(i);
-//   // }
-//   // const res = await fetch("/api/addPlayer", {
-//   //   method: "POST",
-//   //   headers: {
-//   //     "Content-Type": "application/json",
-//   //     Accept: "application/json",
-//   //   },
-//   //   body: JSON.stringify({
-//   //     id: 2,
-//   //   }),
-//   // });
+  // for (let i = 1; i < 33; i++) {
+  // const data = await res.json();
+  //   res = await fetch("/api/addPlayer", {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       Accept: "application/json",
+  //     },
+  //     body: JSON.stringify({
+  //       id: i,
+  //     }),
+  //   });
+  //   if (i === 32) console.log(i);
+  // }
+  // const res = await fetch("/api/addPlayer", {
+  //   method: "POST",
+  //   headers: {
+  //     "Content-Type": "application/json",
+  //     Accept: "application/json",
+  //   },
+  //   body: JSON.stringify({
+  //     id: 2,
+  //   }),
+  // });
 
-//   // const data = await res.json();
-//   return data;
-// };
+  // const data = await res.json();
+  // return data;
+  return;
+};
