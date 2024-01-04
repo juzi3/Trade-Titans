@@ -1,5 +1,5 @@
 <p align='center'>
-  <img width='50%' src='public/assets/FFTA-Logo-wbg.png' alt='Logo'>
+  <img width='40%' src='public/assets/FFTA-Logo-wbg.png' alt='Logo'>
 </p>
 
 ## About
