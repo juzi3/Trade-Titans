@@ -93,10 +93,11 @@ export default function Home() {
     // check which team is adding player
     const target = e.target as HTMLElement;
     const match = await playerCache(target.innerText);
+    const teamName = teams.filter((team) => team.id == match[0].teamId);
     const matchObj = {
       id: match[0].id,
       name: match[0].name,
-      teamName: teams[Number(match[0].teamId) - 1].abbreviation,
+      teamName: teamName[0].abbreviation,
       value: match[0].value,
     };
     if (teamNum === 1) {
