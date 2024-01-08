@@ -30,7 +30,7 @@ interface TeamState {
 
 async function getPlayer(player = "") {
   const players = await fetchPlayers(player);
-  return players.searchRes.sort((a, b) => b.value - a.value);
+  return players.searchRes.sort((a: Player, b: Player) => b.value - a.value);
 }
 
 async function getTeams() {
