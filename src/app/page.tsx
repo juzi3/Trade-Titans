@@ -210,8 +210,8 @@ export default function Home() {
       setAnalyzed(true);
     } else {
       setAnalyzed(false);
-      setTeam1((prevTeam) => Object.assign(prevTeam, { team: [] }));
-      setTeam2((prevTeam) => Object.assign(prevTeam, { team: [] }));
+      setTeam1({ totalValue: 0, team: [] });
+      setTeam2({ totalValue: 0, team: [] });
     }
   };
 
