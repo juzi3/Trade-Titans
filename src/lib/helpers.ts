@@ -8,7 +8,7 @@ export const fetchPlayers = async (search: string) => {
 
 // adds active players from all teams to db, if not in db already
 export const createData = async () => {
-  console.log("createData fired!");
+  // console.log("createData fired!");
   // let res;
 
   // for (let i = 1; i < 33; i++) {

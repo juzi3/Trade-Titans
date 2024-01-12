@@ -66,7 +66,7 @@ export default function Home() {
 
   // checks if player is in cache, if not fetch player from db
   const playerCache = async (player: string) => {
-    console.log(cache, "cache");
+    // console.log(cache, "cache");
     if (player in cache) return cache[player];
     cache[player] = await getPlayer(player);
     return cache[player];
@@ -89,7 +89,7 @@ export default function Home() {
     e: React.MouseEvent<HTMLLIElement, MouseEvent>,
     teamNum: number
   ) => {
-    console.log("handleAddPlayer fired!");
+    // console.log("handleAddPlayer fired!");
     // check which team is adding player
     const target = e.target as HTMLElement;
     const match = await playerCache(target.innerText);
@@ -138,7 +138,7 @@ export default function Home() {
   };
 
   const handleRemovePlayer = (playerName: string, teamNum: number) => {
-    console.log("handleRemovePlayer fired!");
+    // console.log("handleRemovePlayer fired!");
     // check which team to remove from
     if (teamNum === 1) {
       // find index of player in team array
@@ -193,7 +193,7 @@ export default function Home() {
       setPlayer2(e.target.value);
       matches = await playerCache(player2);
     }
-    console.log(matches, "in onChange");
+    // console.log(matches, "in onChange");
     const justNames = matches
       .map(({ name }) => name)
       .filter(
@@ -205,7 +205,7 @@ export default function Home() {
   };
 
   const handleAnalyze = () => {
-    console.log("handleAnalyze fired!");
+    // console.log("handleAnalyze fired!");
     if (!analyzed) {
       setAnalyzed(true);
     } else {

@@ -67,7 +67,7 @@ export async function POST(req: Request) {
       res: result,
     });
   } catch (error) {
-    console.error(error);
+    // console.error(error);
     return NextResponse.json({ message: "add failed" });
   }
 }
