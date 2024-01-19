@@ -97,15 +97,15 @@ const Team = ({
       <section className="flex grow shrink-0 gap-4 basis-2/3">
         <div className="w-full gap-1 flex flex-col">
           <div className="px-2 py-4 flex justify-between text-sm">
-            <span className="basis-[57.1428571%]">Name</span>
-            <span className="basis-[14.2857143%] justify-center flex">
+            <span className="basis-[57.1428571%] lg:text-base">Name</span>
+            <span className="basis-[14.2857143%] justify-center flex lg:text-base">
               Team
             </span>
-            <span className="basis-[14.2857143%] justify-center flex">
+            <span className="basis-[14.2857143%] justify-center flex lg:text-base">
               Value
             </span>
             {!analyzed && (
-              <span className="basis-[14.2857143%] justify-center flex">
+              <span className="basis-[14.2857143%] justify-center flex lg:text-base">
                 Remove
               </span>
             )}

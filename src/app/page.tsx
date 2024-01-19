@@ -219,8 +219,10 @@ export default function Home() {
     <Layout>
       <section id="home-page" className="min-h-screen">
         <header className="basis-1/5 py-8 max-w-screen-lg px-2">
-          <h1 className="font-bold text-lg">Fantasy Football Trade Analyzer</h1>
-          <p>
+          <h1 className="font-bold md:text-2xl text-lg mb-2">
+            Fantasy Football Trade Analyzer
+          </h1>
+          <p className="md:text-lg">
             Welcome to Trade Titans, your premier destination for mastering the
             art of strategic player exchanges in the dynamic realm of fantasy
             football. Whether you &apos;re a seasoned fantasy football veteran
@@ -285,8 +287,10 @@ export default function Home() {
           </button>
         </div>
         <section className="basis-1/5 py-8 max-w-screen-lg px-2">
-          <h1 className="font-bold text-lg">How To Use The Trade Analyzer</h1>
-          <p>
+          <h1 className="font-bold md:text-xl text-lg mb-2">
+            How To Use The Trade Analyzer
+          </h1>
+          <p className="md:text-lg text-black/75">
             Start by typing the names of the players involved on both sides of
             the trade. When all players have been selected, click the
             &apos;Analyze Trade&apos; button. The total value from each side of

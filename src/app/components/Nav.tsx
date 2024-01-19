@@ -20,31 +20,21 @@ const Nav = () => {
   const [popoverWidth, setPopoverWidth] = useState<number | null>(null);
   const refs = useRef<(HTMLElement | null)[]>([]);
 
-  const handleOnFocus = (
-    idx: number,
-    // e:
-    //   | React.MouseEvent<HTMLAnchorElement, MouseEvent>
-    //   | React.FocusEvent<HTMLAnchorElement, Element>
-    e: any
-  ) => {
+  const handleOnFocus = (idx: number, e: any) => {
     const target = e.target.getBoundingClientRect();
-    // console.log(target, e.target, "first console.log");
     setHovering(idx);
-    // setPopoverLeft(e.currentTarget.offsetLeft);
     setPopoverCenter(
       e.currentTarget.offsetLeft - e.currentTarget.offsetWidth / 2
     );
     const menuElement = refs.current[idx];
     if (menuElement) {
       setPopoverHeight(menuElement.offsetHeight);
-      // setPopoverWidth(menuElement.offsetWidth);
     }
   };
 
   return (
     <nav
       className="bg-dark-secondary w-full fixed z-50 h-20 shadow-lg"
-      // onMouseEnter={() => setHovering(null)}
       onMouseLeave={() => setHovering(null)}
     >
       <div
@@ -127,18 +117,15 @@ const Nav = () => {
           </Link>
           {typeof hovering === "number" && (
             <div
-              className={`absolute top-12 shadow-lg bg-white rounded transition-all ${
+              className={`absolute top-12 shadow-xl bg-white rounded transition-all ${
                 hovering !== null
                   ? "opacity-100"
                   : "opacity-0 pointer-events-none"
               } duration-300`}
               style={{
-                // left: popoverLeft || 0,
-                // left: popoverLeft / 2 || 0,
                 left: popoverCenter || 0,
                 height: popoverHeight || 300,
                 width: hovering === 0 ? 350 : hovering === 2 ? 200 : 150,
-                // width: popoverWidth || 300,
               }}
             >
               <SlideWrapper index={0} hovering={hovering}>
@@ -179,7 +166,7 @@ const Nav = () => {
             <ul className="py-4 flex flex-col items-center h-96 justify-evenly text-center">
               <li className="w-full border-b-solid border-b py-4 border-b-dark-secondary/50">
                 <Link
-                  className="font-medium"
+                  className="font-medium text-lg"
                   onClick={() => {
                     setNavOpen(!navOpen);
                   }}
@@ -190,7 +177,7 @@ const Nav = () => {
               </li>
               <li className="w-full border-b-solid border-b py-4 border-b-dark-secondary/50">
                 <Link
-                  className="font-medium"
+                  className="font-medium text-lg"
                   onClick={() => {
                     setNavOpen(!navOpen);
                   }}
@@ -201,7 +188,7 @@ const Nav = () => {
               </li>
               <li className="w-full border-b-solid border-b py-4 border-b-dark-secondary/50">
                 <Link
-                  className="font-medium"
+                  className="font-medium text-lg"
                   onClick={() => {
                     setNavOpen(!navOpen);
                   }}
@@ -212,7 +199,7 @@ const Nav = () => {
               </li>
               <li className="w-full border-b-solid border-b py-4 border-b-dark-secondary/50">
                 <Link
-                  className="font-medium"
+                  className="font-medium text-lg"
                   onClick={() => {
                     setNavOpen(!navOpen);
                   }}
@@ -223,7 +210,7 @@ const Nav = () => {
               </li>
               <li className="w-full border-b-solid border-b py-4 border-b-dark-secondary/50">
                 <Link
-                  className="font-medium"
+                  className="font-medium text-lg"
                   onClick={() => {
                     setNavOpen(!navOpen);
                   }}
@@ -234,7 +221,7 @@ const Nav = () => {
               </li>
               <li className="w-full border-b-solid border-b py-4 border-b-dark-secondary/50">
                 <Link
-                  className="font-medium"
+                  className="font-medium text-lg"
                   onClick={() => {
                     setNavOpen(!navOpen);
                   }}
