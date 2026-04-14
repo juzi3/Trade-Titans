@@ -11,18 +11,19 @@ datasource db {
 }
 
 model player {
-  id       String @id @default(cuid())
-  name     String
-  team     team   @relation(fields: [teamId], references: [id])
-  teamId   String
-  position String
-  value    Int
+  id        String   @id
+  name      String
+  team      team     @relation(fields: [teamId], references: [id])
+  teamId    String
+  position  String
+  value     Int
+  updatedAt DateTime @updatedAt
 }
 
 model team {
   id           String   @id @default(cuid())
   name         String
-  abbreviation String
+  abbreviation String   @unique
   city         String
   player       player[]
 }

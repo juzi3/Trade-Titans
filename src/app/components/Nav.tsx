@@ -1,8 +1,5 @@
 import { useRef, useState } from "react";
 import { RankingsMenu } from "./RankingsMenu";
-import { StatsMenu } from "./StatsMenu";
-import { ToolsMenu } from "./ToolsMenu";
-import { ArticlesMenu } from "./ArticlesMenu";
 import { SlideWrapper } from "./SlideWrapper";
 import Link from "next/link";
 import { Permanent_Marker } from "next/font/google";
@@ -63,58 +60,6 @@ const Nav = () => {
               &#9663;
             </p>
           </Link>
-          <Link
-            href="/stats"
-            onFocus={(e) => handleOnFocus(1, e)}
-            onMouseEnter={(e) => handleOnFocus(1, e)}
-            className="flex gap-1 hover:bg-white p-2 rounded font-medium"
-          >
-            Stats
-            <p
-              className={`transition-rotate transform max-h-10 ${
-                hovering === 1 ? "rotate-180" : "rotate-0"
-              }`}
-            >
-              &#9663;
-            </p>
-          </Link>
-          <Link
-            href="/tools"
-            onFocus={(e) => handleOnFocus(2, e)}
-            onMouseEnter={(e) => handleOnFocus(2, e)}
-            className="flex gap-1 hover:bg-white p-2 rounded font-medium"
-          >
-            Tools
-            <p
-              className={`transition-rotate transform max-h-10 ${
-                hovering === 2 ? "rotate-180" : "rotate-0"
-              }`}
-            >
-              &#9663;
-            </p>
-          </Link>
-          <Link
-            href="/articles"
-            onFocus={(e) => handleOnFocus(3, e)}
-            onMouseEnter={(e) => handleOnFocus(3, e)}
-            className="flex gap-1 hover:bg-white p-2 rounded font-medium"
-          >
-            Articles
-            <p
-              className={`transition-rotate transform max-h-10 ${
-                hovering === 3 ? "rotate-180" : "rotate-0"
-              }`}
-            >
-              &#9663;
-            </p>
-          </Link>
-          <Link
-            href="/news"
-            className="flex gap-1 hover:bg-white p-2 rounded font-medium"
-            onMouseEnter={() => setHovering(null)}
-          >
-            News
-          </Link>
           {typeof hovering === "number" && (
             <div
               className={`absolute top-12 shadow-xl bg-white rounded transition-all ${
@@ -125,20 +70,11 @@ const Nav = () => {
               style={{
                 left: popoverCenter || 0,
                 height: popoverHeight || 300,
-                width: hovering === 0 ? 350 : hovering === 2 ? 200 : 150,
+                width: 350,
               }}
             >
               <SlideWrapper index={0} hovering={hovering}>
                 <RankingsMenu ref={(element) => (refs.current[0] = element)} />
-              </SlideWrapper>
-              <SlideWrapper index={1} hovering={hovering}>
-                <StatsMenu ref={(element) => (refs.current[1] = element)} />
-              </SlideWrapper>
-              <SlideWrapper index={2} hovering={hovering}>
-                <ToolsMenu ref={(element) => (refs.current[2] = element)} />
-              </SlideWrapper>
-              <SlideWrapper index={3} hovering={hovering}>
-                <ArticlesMenu ref={(element) => (refs.current[3] = element)} />
               </SlideWrapper>
             </div>
           )}
@@ -184,50 +120,6 @@ const Nav = () => {
                   href="/rankings"
                 >
                   Rankings
-                </Link>
-              </li>
-              <li className="w-full border-b-solid border-b py-4 border-b-dark-secondary/50">
-                <Link
-                  className="font-medium text-lg"
-                  onClick={() => {
-                    setNavOpen(!navOpen);
-                  }}
-                  href="/stats"
-                >
-                  Stats
-                </Link>
-              </li>
-              <li className="w-full border-b-solid border-b py-4 border-b-dark-secondary/50">
-                <Link
-                  className="font-medium text-lg"
-                  onClick={() => {
-                    setNavOpen(!navOpen);
-                  }}
-                  href="/tools"
-                >
-                  Tools
-                </Link>
-              </li>
-              <li className="w-full border-b-solid border-b py-4 border-b-dark-secondary/50">
-                <Link
-                  className="font-medium text-lg"
-                  onClick={() => {
-                    setNavOpen(!navOpen);
-                  }}
-                  href="/articles"
-                >
-                  Articles
-                </Link>
-              </li>
-              <li className="w-full border-b-solid border-b py-4 border-b-dark-secondary/50">
-                <Link
-                  className="font-medium text-lg"
-                  onClick={() => {
-                    setNavOpen(!navOpen);
-                  }}
-                  href="/news"
-                >
-                  News
                 </Link>
               </li>
             </ul>

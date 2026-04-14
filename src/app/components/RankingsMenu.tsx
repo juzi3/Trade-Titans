@@ -19,18 +19,6 @@ export const RankingsMenu = forwardRef<HTMLElement>(function RankingsMenu(
           Standard Rankings
         </Link>
       </div>
-      <div className="flex flex-col grow shrink-0 p-4">
-        <h3 className="font-bold">REST OF SEASON</h3>
-        <a href="/rankings/ros-ppr" className="p-1">
-          PPR Rankings
-        </a>
-        <a href="/rankings/ros-half-ppr" className="p-1">
-          Half PPR Rankings
-        </a>
-        <a href="/rankings/ros-standard" className="p-1">
-          Standard Rankings
-        </a>
-      </div>
     </section>
   );
 });

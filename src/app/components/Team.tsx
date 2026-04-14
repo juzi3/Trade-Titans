@@ -1,4 +1,4 @@
-import Image from "next/image";
+import PlayerAvatar from "./PlayerAvatar";
 import Suggestions from "./Suggestions";
 
 interface Teams {
@@ -117,13 +117,7 @@ const Team = ({
                 className="px-2 py-4 border-solid border-black border-2 rounded flex justify-between items-center text-sm"
               >
                 <span className="basis-[57.1428571%] flex items-center gap-2">
-                  <Image
-                    src={`https://media-4.api-sports.io/american-football/players/${id}.png`}
-                    alt="Player Image"
-                    width={50}
-                    height={50}
-                    style={{ objectFit: "contain" }}
-                  />
+                  <PlayerAvatar playerId={id} name={name} />
                   {name}
                 </span>
                 <span className="basis-[14.2857143%] justify-center flex">
