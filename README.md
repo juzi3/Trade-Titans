@@ -31,7 +31,7 @@ Player rosters come from the public Sleeper API at build/seed time — no API ke
 
 ## Running Locally
 
-You'll need Node 18+ and a Postgres database (a free Vercel Postgres instance works).
+You'll need Node 22+ and a Postgres database (a free Vercel Postgres instance works).
 
 ```bash
 # 1. Install deps

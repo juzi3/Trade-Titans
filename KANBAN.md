@@ -23,10 +23,17 @@ _(nothing)_
 
 ---
 
-## Deferred (not this pass)
+## Next pass (planned)
 
-- Testing infrastructure (Vitest + RTL) — follow-up pass that also extracts trade-math to a pure module.
+- **Build out Rankings pages** (`/rankings`, `/rankings/{ppr,half-ppr,standard}`) — real tables, not stubs.
+- **Testing infrastructure** — extract trade math from `src/app/page.tsx` into `src/lib/trade.ts`, add Vitest, cover fair-trade threshold + value summing.
+
+## Deferred (later)
+
 - Automated data refresh (cron / scheduled function).
 - Live value source integration (KTC / FantasyPros).
 - Rebuilding News / Stats / Tools / Articles sections.
-- Build out the real Rankings pages (currently still stubs at `/rankings`, `/rankings/{ppr,half-ppr,standard}`).
+
+---
+
+Polish pass shipped 2026-04-14: schema migrated via `prisma db push --force-reset`, seeded from Sleeper, trade analyzer working end-to-end.
