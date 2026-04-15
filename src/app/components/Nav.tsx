@@ -74,7 +74,7 @@ const Nav = () => {
               }}
             >
               <SlideWrapper index={0} hovering={hovering}>
-                <RankingsMenu ref={(element) => (refs.current[0] = element)} />
+                <RankingsMenu ref={(element) => { refs.current[0] = element; }} />
               </SlideWrapper>
             </div>
           )}
