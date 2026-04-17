@@ -2,7 +2,7 @@
 export const fetchPlayers = async (search: string) => {
   const res = await fetch(`/api/getPlayers?search=${search}`);
   const data = await res.json();
-  console.log("fetchP", data);
+  // console.log("fetchP", data);
   return data;
 };
 

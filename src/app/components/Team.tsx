@@ -1,3 +1,4 @@
+import type { Dispatch, SetStateAction } from "react";
 import PlayerAvatar from "./PlayerAvatar";
 import Suggestions from "./Suggestions";
 
@@ -27,7 +28,7 @@ interface TeamProps {
   analyzed: boolean;
   player: string;
   suggestions: string[];
-  setSuggestions: ([]) => void;
+  setSuggestions: Dispatch<SetStateAction<string[]>>;
   setPlayer: (player: string) => void;
   handleAddPlayer: (
     e: React.MouseEvent<HTMLLIElement, MouseEvent>,
@@ -67,7 +68,7 @@ const Team = ({
           <div className="gap-1 flex-col flex relative">
             {!analyzed ? (
               <input
-                className="rounded px-2 py-4 w-full border border-dark-primary/40"
+                className="rounded-sm px-2 py-4 w-full border border-dark-primary/40"
                 name={teamNum === 1 ? "team1" : "team2"}
                 type="text"
                 value={player}
@@ -79,7 +80,7 @@ const Team = ({
                 onChange={(e) => onChange(e, teamNum)}
               />
             ) : (
-              <h2 className="px-4 py-2 bg-red text-light-secondary rounded">
+              <h2 className="px-4 py-2 bg-red text-light-secondary rounded-sm">
                 Total Trade Value: {team.totalValue}
               </h2>
             )}
@@ -114,7 +115,7 @@ const Team = ({
             return (
               <div
                 key={`${teamNum === 1 ? 1 : 2}${name}`}
-                className="px-2 py-4 border-solid border-black border-2 rounded flex justify-between items-center text-sm"
+                className="px-2 py-4 border-solid border-black border-2 rounded-sm flex justify-between items-center text-sm"
               >
                 <span className="basis-[57.1428571%] flex items-center gap-2">
                   <PlayerAvatar playerId={id} name={name} />
