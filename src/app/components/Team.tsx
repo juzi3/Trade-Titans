@@ -1,3 +1,4 @@
+import type { Dispatch, SetStateAction } from "react";
 import PlayerAvatar from "./PlayerAvatar";
 import Suggestions from "./Suggestions";
 
@@ -27,7 +28,7 @@ interface TeamProps {
   analyzed: boolean;
   player: string;
   suggestions: string[];
-  setSuggestions: ([]) => void;
+  setSuggestions: Dispatch<SetStateAction<string[]>>;
   setPlayer: (player: string) => void;
   handleAddPlayer: (
     e: React.MouseEvent<HTMLLIElement, MouseEvent>,

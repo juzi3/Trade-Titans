@@ -1,7 +1,9 @@
+import type { Dispatch, SetStateAction } from "react";
+
 interface SuggestionsProps {
   player: string;
   suggestions: string[];
-  setSuggestions: ([]) => void;
+  setSuggestions: Dispatch<SetStateAction<string[]>>;
   setPlayer: (player: string) => void;
   handleAddPlayer: (
     e: React.MouseEvent<HTMLLIElement, MouseEvent>,
