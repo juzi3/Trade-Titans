@@ -1,51 +1,28 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Team from "./components/Team";
 import Layout from "./components/Layout";
-import { createData, fetchPlayers } from "@/lib/helpers";
+import { fetchPlayers, type PlayerSearchResult } from "@/lib/helpers";
 
-interface Teams {
+interface RosterPlayer {
   id: string;
   name: string;
-  abbreviation: string;
-  city: string;
-  player: any[];
-}
-
-interface Player {
-  id: string;
-  name: string;
-  teamId?: string;
-  teamName?: string;
-  position?: string;
-  image?: string | null;
+  teamName: string;
   value: number;
 }
 
 interface TeamState {
   totalValue: number;
-  team: Player[];
+  team: RosterPlayer[];
 }
 
-async function getPlayer(player = "") {
-  const players = await fetchPlayers(player);
-  return players.searchRes.sort((a: Player, b: Player) => b.value - a.value);
+async function getPlayer(query = "") {
+  const { players } = await fetchPlayers(query);
+  return players;
 }
 
-async function getTeams() {
-  const players = await fetchPlayers("");
-  return players.teams;
-}
-
-async function addPlayer() {
-  const added = await createData();
-  return added;
-}
-
-const cache: {
-  [key: string]: Player[];
-} = {};
+const cache: Record<string, PlayerSearchResult[]> = {};
 
 export default function Home() {
   const [player1, setPlayer1] = useState("");
@@ -60,48 +37,32 @@ export default function Home() {
   });
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [analyzed, setAnalyzed] = useState(false);
-  const [teams, setTeams] = useState<Teams[]>([]);
 
-  // const ref = useRef(null);
-
-  // checks if player is in cache, if not fetch player from db
-  const playerCache = async (player: string) => {
-    // console.log(cache, "cache");
-    if (player in cache) return cache[player];
-    cache[player] = await getPlayer(player);
-    return cache[player];
+  const playerCache = async (query: string) => {
+    if (query in cache) return cache[query];
+    cache[query] = await getPlayer(query);
+    return cache[query];
   };
 
-  // fetch player and team info from db on load
+  // Warm the empty-search cache so the first keystroke is instant.
   useEffect(() => {
-    async function fetchTeam() {
-      // add empty player search to cache
-      await playerCache(" ");
-      // get teams from backend
-      const teamData = await getTeams();
-      setTeams(teamData);
-    }
-
-    fetchTeam();
+    playerCache("");
   }, []);
 
   const handleAddPlayer = async (
     e: React.MouseEvent<HTMLLIElement, MouseEvent>,
     teamNum: number
   ) => {
-    // console.log("handleAddPlayer fired!");
-    // check which team is adding player
     const target = e.target as HTMLElement;
     const match = await playerCache(target.innerText);
-    const teamName = teams.filter((team) => team.id == match[0].teamId);
-    const matchObj = {
-      id: match[0].id,
-      name: match[0].name,
-      teamName: teamName[0].abbreviation,
-      value: match[0].value,
+    const picked = match[0];
+    const matchObj: RosterPlayer = {
+      id: picked.id,
+      name: picked.name,
+      teamName: picked.team.abbreviation,
+      value: picked.value,
     };
     if (teamNum === 1) {
-      // if player input is empty or team already has player do nothing
       if (
         !player1 ||
         team1.team.some(({ name }) => name === target.innerText)
@@ -110,12 +71,10 @@ export default function Home() {
         setSuggestions([]);
         return;
       }
-      // else add player to current team array
       setTeam1({
         totalValue: team1.totalValue + matchObj.value,
         team: [...team1.team, matchObj],
       });
-      // clear player input
       setPlayer1("");
     } else {
       if (
@@ -126,23 +85,17 @@ export default function Home() {
         setSuggestions([]);
         return;
       }
-      // else add player to current team array
       setTeam2({
         totalValue: team2.totalValue + matchObj.value,
         team: [...team2.team, matchObj],
       });
       setPlayer2("");
     }
-    // clear suggestions
     setSuggestions([]);
   };
 
   const handleRemovePlayer = (playerName: string, teamNum: number) => {
-    // console.log("handleRemovePlayer fired!");
-    // check which team to remove from
     if (teamNum === 1) {
-      // find index of player in team array
-      // let playerIdx = team1.indexOf(playerName);
       let playerIdx = 0;
       for (let i = 0; i < team1.team.length; i++) {
         if (team1.team[i].name === playerName) {
@@ -150,12 +103,10 @@ export default function Home() {
           break;
         }
       }
-      // make new array without selected player
       const newTeam = [
         ...team1.team.slice(0, playerIdx),
         ...team1.team.slice(playerIdx + 1),
       ];
-      // set team state to new team
       setTeam1({
         totalValue: team1.totalValue - team1.team[playerIdx].value,
         team: newTeam,
@@ -172,7 +123,6 @@ export default function Home() {
         ...team2.team.slice(0, playerIdx),
         ...team2.team.slice(playerIdx + 1),
       ];
-      // setTeam2(newTeam);
       setTeam2({
         totalValue: team2.totalValue - team2.team[playerIdx].value,
         team: newTeam,
@@ -184,7 +134,6 @@ export default function Home() {
     e: React.ChangeEvent<HTMLInputElement>,
     teamNum: number
   ) => {
-    // check which team
     let matches;
     if (teamNum === 1) {
       setPlayer1(e.target.value);
@@ -193,7 +142,6 @@ export default function Home() {
       setPlayer2(e.target.value);
       matches = await playerCache(player2);
     }
-    // console.log(matches, "in onChange");
     const justNames = matches
       .map(({ name }) => name)
       .filter(
@@ -205,7 +153,6 @@ export default function Home() {
   };
 
   const handleAnalyze = () => {
-    // console.log("handleAnalyze fired!");
     if (!analyzed) {
       setAnalyzed(true);
     } else {
@@ -304,14 +251,3 @@ export default function Home() {
     </Layout>
   );
 }
-
-// button for adding players
-/* <button
-  className="bg-dark-secondary p-4"
-  onClick={async () => {
-    const added = await addPlayer();
-    console.log("res from home: ");
-  }}
->
-  TEst
-</button> */

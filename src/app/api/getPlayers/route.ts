@@ -1,19 +1,22 @@
 import { NextResponse } from "next/server";
 import prisma from "../../../lib/prisma";
 
+const RESULT_LIMIT = 20;
+
 export async function GET(req: Request) {
-  // get the search term from the frontend
   const { searchParams } = new URL(req.url);
-  const playerName = searchParams.get("search") as string;
-  // lookup that player in the db
-  const searchRes = await prisma.player.findMany({
+  const search = searchParams.get("search") ?? "";
+
+  const players = await prisma.player.findMany({
     where: {
-      name: { contains: playerName },
+      name: { contains: search, mode: "insensitive" },
     },
+    include: {
+      team: { select: { abbreviation: true } },
+    },
+    orderBy: { value: "desc" },
+    take: RESULT_LIMIT,
   });
-  // finds all players
-  // const players = await prisma.player.findMany();
-  // find all teams
-  const teams = await prisma.team.findMany();
-  return NextResponse.json({ searchRes, teams });
+
+  return NextResponse.json({ players });
 }
