@@ -27,6 +27,8 @@ _(nothing)_
 
 - **Build out Rankings pages** (`/rankings`, `/rankings/{ppr,half-ppr,standard}`) — real tables, not stubs.
 - **Testing infrastructure** — extract trade math from `src/app/page.tsx` into `src/lib/trade.ts`, add Vitest, cover fair-trade threshold + value summing.
+- **Find a new player-photo API** — current `media-4.api-sports.io` source is inaccessible to the owner so every card falls back to the silhouette placeholder. Research alternatives (Sleeper CDN `sleepercdn.com/content/nfl/players/{id}.jpg`, ESPN, etc.), pick one that keys off `sleeper_id`, update `PlayerAvatar.tsx` + `next.config.js` `remotePatterns`.
+- **Update the player search** — `/api/getPlayers` currently does a case-sensitive `contains` match, returns the full teams list on every keystroke, and has no result cap; `fetchPlayers` in `src/lib/helpers.ts` has a leftover debug log and the dead `createData` stub. Move to case-insensitive search with a sane `take` limit, split teams into its own endpoint (or fetch once on mount), and clean up `helpers.ts`.
 
 ## Deferred (later)
 
