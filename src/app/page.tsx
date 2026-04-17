@@ -218,7 +218,7 @@ export default function Home() {
   return (
     <Layout>
       <section id="home-page" className="min-h-screen">
-        <header className="basis-1/5 py-8 max-w-screen-lg px-2">
+        <header className="basis-1/5 py-8 max-w-(--breakpoint-lg) px-2">
           <h1 className="font-bold md:text-2xl text-lg mb-2">
             Fantasy Football Trade Analyzer
           </h1>
@@ -231,7 +231,7 @@ export default function Home() {
           </p>
         </header>
         {analyzed && (
-          <section className="flex justify-center w-64 bg-red text-light-secondary rounded px-2 py-4 max-w-screen-lg mx-auto">
+          <section className="flex justify-center w-64 bg-red text-light-secondary rounded-sm px-2 py-4 max-w-(--breakpoint-lg) mx-auto">
             <div className="flex">
               <h1 className="text-center">
                 {Math.abs(team1.totalValue - team2.totalValue) <= 2
@@ -269,10 +269,10 @@ export default function Home() {
             team={team2}
           />
         </section>
-        <div className="basis-1/5 py-8 w-full flex flex-col items-center gap-4 max-w-screen-lg">
+        <div className="basis-1/5 py-8 w-full flex flex-col items-center gap-4 max-w-(--breakpoint-lg)">
           {analyzed && (
             <button
-              className="px-2 py-4 bg-gradient-to-r from-cyan to-dark-secondary rounded w-64 text-white"
+              className="px-2 py-4 bg-linear-to-r from-cyan to-dark-secondary rounded-sm w-64 text-white"
               onClick={() => setAnalyzed(false)}
             >
               Edit Current Trade
@@ -280,13 +280,13 @@ export default function Home() {
           )}
           <button
             disabled={team1.team.length === 0 || team2.team.length === 0}
-            className="px-2 py-4 bg-dark-secondary rounded w-64"
+            className="px-2 py-4 bg-dark-secondary rounded-sm w-64"
             onClick={() => handleAnalyze()}
           >
             {analyzed ? "Start New Trade" : "Analyze Trade"}
           </button>
         </div>
-        <section className="basis-1/5 py-8 max-w-screen-lg px-2">
+        <section className="basis-1/5 py-8 max-w-(--breakpoint-lg) px-2">
           <h1 className="font-bold md:text-xl text-lg mb-2">
             How To Use The Trade Analyzer
           </h1>

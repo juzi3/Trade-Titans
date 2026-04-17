@@ -35,7 +35,7 @@ const Nav = () => {
       onMouseLeave={() => setHovering(null)}
     >
       <div
-        className="max-w-screen-lg flex justify-between items-center mx-auto py-4 px-2"
+        className="max-w-(--breakpoint-lg) flex justify-between items-center mx-auto py-4 px-2"
         onMouseLeave={() => setHovering(null)}
       >
         <div>
@@ -44,12 +44,12 @@ const Nav = () => {
           </Link>
         </div>
         <div className="basis-1/5" onMouseEnter={() => setHovering(null)}></div>
-        <div className="hidden relative sm:flex justify-evenly w-3/4 max-w-screen-md items-center">
+        <div className="hidden relative sm:flex justify-evenly w-3/4 max-w-(--breakpoint-md) items-center">
           <Link
             href="/rankings"
             onFocus={(e) => handleOnFocus(0, e)}
             onMouseEnter={(e) => handleOnFocus(0, e)}
-            className="flex gap-1 hover:bg-white p-2 rounded font-medium"
+            className="flex gap-1 hover:bg-white p-2 rounded-sm font-medium"
           >
             Rankings
             <p

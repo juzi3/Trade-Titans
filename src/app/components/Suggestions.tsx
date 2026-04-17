@@ -21,7 +21,7 @@ const Suggestions = ({
   playerNum,
 }: SuggestionsProps) => {
   return (
-    <ul className="bg-white shadow-lg rounded max-h-52 overflow-auto absolute top-14 w-full z-50">
+    <ul className="bg-white shadow-lg rounded-sm max-h-52 overflow-auto absolute top-14 w-full z-50">
       {player &&
         suggestions.map((s) => {
           return (
